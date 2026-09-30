@@ -66,7 +66,7 @@
 
     <string name="keep_monitor_status_ready">El monitoreo persistente está listo. ScreenMix espera cambios del sistema y solo actúa cuando detecta una captura.</string>
     <string name="keep_monitor_status_limited">Android puede detener ScreenMix hasta que permitas el uso de batería sin restricciones.</string>
-    <string name="battery_dialog_title">¿Mantener ScreenMix activo?</string>
+    <string name="battery_dialog_title">Mantener ScreenMix activo</string>
     <string name="battery_dialog_message">Permite que ScreenMix siga disponible aunque cierres la app o reinicies el teléfono. ScreenMix permanece en reposo y solo actúa cuando detecta una captura de pantalla. Después vuelve a esperar, por lo que no está trabajando constantemente en segundo plano.</string>
     <string name="battery_dialog_continue">CONTINUAR</string>
     <string name="battery_dialog_cancel">CANCELAR</string>
