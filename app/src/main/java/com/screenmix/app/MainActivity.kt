@@ -257,7 +257,11 @@ class MainActivity : ComponentActivity() {
                         ) {
                             rowLanguages.forEach { language ->
                                 LanguageChip(
-                                    label = language.nativeName,
+                                    label = if (language == AppLanguage.SYSTEM) {
+                                        getString(R.string.language_system)
+                                    } else {
+                                        language.nativeName
+                                    },
                                     selected = selectedLanguage == language,
                                     onClick = {
                                         selectedLanguage = language
