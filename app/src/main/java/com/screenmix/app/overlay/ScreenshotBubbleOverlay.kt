@@ -17,6 +17,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.screenmix.app.R
+import com.screenmix.app.handler.LocaleHelper
 import com.screenmix.app.handler.ScreenshotActions
 import com.screenmix.app.handler.ScreenshotPreferences
 import com.screenmix.app.handler.ScreenshotPromptLauncher
@@ -54,9 +55,16 @@ object ScreenshotBubbleOverlay {
 
         val windowManager = appContext.getSystemService(WindowManager::class.java) ?: return false
         val density = appContext.resources.displayMetrics.density
-        val accent = ScreenMixAccent.fromStorage(
+        val localized = LocaleHelper.wrap(appContext)
+        val selectedAccent = ScreenMixAccent.fromStorage(
             ScreenshotPreferences(appContext).accentId,
-        ).notificationArgb
+        )
+        val accent = selectedAccent.notificationArgb
+        val iconColor = if (selectedAccent == ScreenMixAccent.ICE) {
+            Color.BLACK
+        } else {
+            Color.WHITE
+        }
 
         return runCatching {
             val root = FrameLayout(appContext).apply {
@@ -68,7 +76,7 @@ object ScreenshotBubbleOverlay {
 
             val mainButton = ImageView(appContext).apply {
                 setImageResource(R.drawable.ic_notification)
-                setColorFilter(Color.WHITE)
+                setColorFilter(iconColor)
                 setPadding(
                     (15 * density).toInt(),
                     (15 * density).toInt(),
@@ -76,7 +84,7 @@ object ScreenshotBubbleOverlay {
                     (15 * density).toInt(),
                 )
                 background = circleDrawable(accent)
-                contentDescription = appContext.getString(R.string.open_capture_actions)
+                contentDescription = localized.getString(R.string.open_capture_actions)
                 elevation = 12 * density
                 setOnClickListener {
                     val target = resolveLatestScreenshot(appContext) ?: currentUri
@@ -103,7 +111,7 @@ object ScreenshotBubbleOverlay {
                 textSize = 16f
                 setTextColor(Color.WHITE)
                 background = circleDrawable(Color.rgb(42, 46, 54))
-                contentDescription = appContext.getString(R.string.close_capture_button)
+                contentDescription = localized.getString(R.string.close_capture_button)
                 elevation = 16 * density
                 setOnClickListener {
                     hide(appContext, markHandled = true)
