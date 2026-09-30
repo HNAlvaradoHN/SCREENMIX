@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.ui.prompt
+package com.screenmix.app.ui.prompt
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -32,11 +32,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.redbolt.screenshot.handler.PromptAction
-import com.redbolt.screenshot.handler.PromptPosition
-import com.redbolt.screenshot.ui.rememberOverlaySystemBarInsets
-import com.redbolt.screenshot.ui.theme.BoltTheme
-import com.redbolt.screenshot.ui.theme.DotoFont
+import com.screenmix.app.handler.PromptAction
+import com.screenmix.app.handler.PromptPosition
+import com.screenmix.app.ui.rememberOverlaySystemBarInsets
+import com.screenmix.app.ui.theme.BoltTheme
+import com.screenmix.app.ui.theme.DotoFont
 
 @Composable
 fun ScreenshotPromptContent(
