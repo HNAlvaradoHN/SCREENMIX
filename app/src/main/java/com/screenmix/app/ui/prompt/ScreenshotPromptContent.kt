@@ -145,6 +145,13 @@ fun ScreenshotPromptContent(
                         modifier = Modifier.weight(1f),
                     )
                 }
+                Spacer(modifier = Modifier.height(10.dp))
+                PromptButton(
+                    label = stringResource(R.string.action_close),
+                    onClick = onDismiss,
+                    primary = false,
+                    modifier = Modifier.fillMaxWidth(),
+                )
                 if (!overlayMode) {
                     Text(
                         text = stringResource(R.string.tap_outside_title),
