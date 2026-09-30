@@ -11,7 +11,6 @@ import com.screenmix.app.accessibility.SystemPreviewDismissAccessibilityService
 import com.screenmix.app.detector.ScreenshotDetector
 import com.screenmix.app.handler.ScreenshotNotifier
 import com.screenmix.app.handler.ScreenshotPreferences
-import com.screenmix.app.handler.ScreenshotPromptLauncher
 import com.screenmix.app.overlay.ScreenshotBubbleOverlay
 
 class ScreenshotMonitorService : LifecycleService() {
