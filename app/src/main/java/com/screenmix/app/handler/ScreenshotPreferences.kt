@@ -13,6 +13,10 @@ class ScreenshotPreferences(context: Context) {
         get() = prefs.getBoolean(KEY_INSTANT_PROMPT, true)
         set(value) = prefs.edit().putBoolean(KEY_INSTANT_PROMPT, value).apply()
 
+    var keepMonitorActive: Boolean
+        get() = prefs.getBoolean(KEY_KEEP_MONITOR_ACTIVE, false)
+        set(value) = prefs.edit().putBoolean(KEY_KEEP_MONITOR_ACTIVE, value).apply()
+
     var promptPosition: PromptPosition
         get() = PromptPosition.fromStorage(prefs.getString(KEY_PROMPT_POSITION, null))
         set(value) = prefs.edit().putString(KEY_PROMPT_POSITION, value.storageValue).apply()
@@ -70,6 +74,7 @@ class ScreenshotPreferences(context: Context) {
         private const val PREFS_NAME = "screenmix_prefs"
         private const val KEY_MONITOR_ENABLED = "monitor_enabled"
         private const val KEY_INSTANT_PROMPT = "instant_prompt"
+        private const val KEY_KEEP_MONITOR_ACTIVE = "keep_monitor_active"
         private const val KEY_PROMPT_POSITION = "prompt_position"
         private const val KEY_VIBRATE_ON_PROMPT = "vibrate_on_prompt"
         private const val KEY_TAP_OUTSIDE_DISMISS = "tap_outside_dismiss"
