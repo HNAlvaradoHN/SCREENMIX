@@ -34,7 +34,7 @@
     <string name="position_center">CENTER</string>
     <string name="position_bottom">BOTTOM</string>
     <string name="vibrate_title">VIBRATE ON PROMPT</string>
-    <string name="vibrate_subtitle">Short haptic when the chooser appears</string>
+    <string name="vibrate_subtitle">Short haptic when the prompt appears</string>
     <string name="tap_outside_title">TAP OUTSIDE TO DISMISS</string>
     <string name="tap_outside_subtitle">Dismiss by tapping the area around the prompt</string>
     <string name="detection_delay_title">DETECTION DELAY</string>
