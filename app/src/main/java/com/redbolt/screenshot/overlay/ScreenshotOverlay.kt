@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.overlay
+package com.screenmix.app.overlay
 
 import android.content.Context
 import android.graphics.PixelFormat
@@ -15,11 +15,11 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import com.redbolt.screenshot.handler.ScreenshotActions
-import com.redbolt.screenshot.handler.ScreenshotPreferences
-import com.redbolt.screenshot.handler.ScreenshotPromptLauncher
-import com.redbolt.screenshot.ui.prompt.ScreenshotPromptContent
-import com.redbolt.screenshot.ui.theme.BoltScreenshotTheme
+import com.screenmix.app.handler.ScreenshotActions
+import com.screenmix.app.handler.ScreenshotPreferences
+import com.screenmix.app.handler.ScreenshotPromptLauncher
+import com.screenmix.app.ui.prompt.ScreenshotPromptContent
+import com.screenmix.app.ui.theme.BoltScreenshotTheme
 
 object ScreenshotOverlay {
     private var composeView: ComposeView? = null
