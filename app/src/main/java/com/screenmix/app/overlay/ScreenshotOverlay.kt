@@ -74,7 +74,12 @@ object ScreenshotOverlay {
                                 }
                                 hide(context)
                             },
-                            onDismiss = { hide(context) },
+                            onDismiss = {
+                                if (uri != ScreenshotPromptLauncher.testUri) {
+                                    ScreenshotActions.dismissScreenshot(context, uri)
+                                }
+                                hide(context)
+                            },
                         )
                     }
                 }
