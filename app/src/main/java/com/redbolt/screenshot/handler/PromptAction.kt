@@ -1,6 +1,6 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
-import com.redbolt.screenshot.R
+import com.screenmix.app.R
 
 enum class PromptAction(val storageKey: String, val labelRes: Int) {
     COPY_DELETE("copy_delete", R.string.action_copy_delete),
