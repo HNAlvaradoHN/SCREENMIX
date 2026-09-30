@@ -7,8 +7,8 @@
     <string name="monitor_needs_access">Needs photo access</string>
     <string name="keep_monitor_title">KEEP MONITOR ACTIVE</string>
     <string name="keep_monitor_subtitle">Keep monitoring after ScreenMix is removed from Recents</string>
-    <string name="popup_prompt_title">POP-UP PROMPT</string>
-    <string name="popup_prompt_subtitle">Show actions right after each screenshot</string>
+    <string name="popup_prompt_title">FLOATING BUTTON</string>
+    <string name="popup_prompt_subtitle">Show a small ScreenMix button after each screenshot</string>
 
     <string name="language_title">LANGUAGE</string>
     <string name="language_subtitle">Choose the language used by ScreenMix</string>
@@ -55,7 +55,7 @@
     <string name="tap_outside_title">TAP OUTSIDE TO DISMISS</string>
     <string name="tap_outside_subtitle">Dismiss by tapping the area around the prompt</string>
     <string name="detection_delay_title">DETECTION DELAY</string>
-    <string name="detection_delay_subtitle">Extra delay after ScreenMix confirms that the screenshot is stable</string>
+    <string name="detection_delay_subtitle">Delay before the floating button appears</string>
     <string name="detection_delay_value">%1$d ms</string>
     <string name="test_prompt">TEST PROMPT</string>
     <string name="test_prompt_subtitle">Preview placement without taking a screenshot</string>
@@ -77,4 +77,6 @@
     <string name="battery_dialog_continue">CONTINUE</string>
     <string name="battery_dialog_cancel">CANCEL</string>
     <string name="open_battery_settings">OPEN BATTERY SETTINGS</string>
+    <string name="open_capture_actions">Open screenshot actions</string>
+    <string name="close_capture_button">Close screenshot button</string>
 </resources>
