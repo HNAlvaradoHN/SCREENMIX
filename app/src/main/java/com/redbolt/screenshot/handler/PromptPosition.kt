@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
 enum class PromptPosition(val storageValue: String) {
     TOP("top"),
