@@ -1,6 +1,6 @@
 # ScreenMix
 
-ScreenMix is an independent Android screenshot workflow project.
+ScreenMix is an independent Android screenshot workflow project focused on two reliable actions: **Copy & Delete** and **Copy & Save**.
 
 It monitors newly created screenshots and presents two focused actions: **Copy & Delete** and **Copy & Save**. Sharing actions have been intentionally removed to keep the workflow simple and reliable.
 
@@ -12,7 +12,7 @@ Current application identity:
 
 - App name: **ScreenMix**
 - Android application ID: `com.screenmix.app`
-- Initial ScreenMix version: `0.1.0`
+- Current development version: `0.2.0`
 - Minimum Android version: Android 8.0 / API 26
 
 ## Privacy
@@ -42,6 +42,16 @@ A standard debug build is intended to be produced with:
 Build/signing setup will be finalized as part of the ScreenMix migration.
 
 GitHub Actions builds the debug APK automatically from `main` so compile errors can be caught without publishing a release.
+
+## Languages
+
+ScreenMix includes built-in language selection and currently ships with English, Spanish, Portuguese, French, and German. Choosing **System** follows the device/app language. Android 13+ can also expose ScreenMix in the system App language settings.
+
+Translations live in standard Android `values-xx` resource folders so contributors can add or improve languages without changing application logic.
+
+## Appearance
+
+ScreenMix uses its own visual theme and accent palette. The selected accent is applied to the settings UI, screenshot prompt, and supported notification accents. Android controls the final notification layout, so exact colors and placement may vary by device/OEM.
 
 ## Automatic restart
 
