@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
 import android.content.Context
 
@@ -67,7 +67,7 @@ class ScreenshotPreferences(context: Context) {
     }
 
     companion object {
-        private const val PREFS_NAME = "bolt_screenshot_prefs"
+        private const val PREFS_NAME = "screenmix_prefs"
         private const val KEY_MONITOR_ENABLED = "monitor_enabled"
         private const val KEY_INSTANT_PROMPT = "instant_prompt"
         private const val KEY_PROMPT_POSITION = "prompt_position"
