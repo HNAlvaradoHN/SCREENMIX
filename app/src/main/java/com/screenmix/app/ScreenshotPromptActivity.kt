@@ -1,5 +1,6 @@
 package com.screenmix.app
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.net.Uri
@@ -12,13 +13,19 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import com.screenmix.app.handler.LocaleHelper
 import com.screenmix.app.handler.ScreenshotActions
 import com.screenmix.app.handler.ScreenshotNotifier
 import com.screenmix.app.handler.ScreenshotPreferences
 import com.screenmix.app.ui.prompt.ScreenshotPromptContent
-import com.screenmix.app.ui.theme.BoltScreenshotTheme
+import com.screenmix.app.ui.theme.ScreenMixAccent
+import com.screenmix.app.ui.theme.ScreenMixTheme
 
 class ScreenshotPromptActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.wrap(newBase))
+    }
+
     private var pendingUri: Uri? = null
 
     private val deleteLauncher = registerForActivityResult(
@@ -27,11 +34,11 @@ class ScreenshotPromptActivity : ComponentActivity() {
         val uri = pendingUri
         if (result.resultCode == RESULT_OK && uri != null) {
             ScreenshotNotifier.cancelPrompt(this, uri)
-            val message = intent.getStringExtra(EXTRA_DELETE_SUCCESS_MESSAGE) ?: "Screenshot deleted"
+            val message = intent.getStringExtra(EXTRA_DELETE_SUCCESS_MESSAGE) ?: getString(R.string.screenshot_deleted)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         } else if (uri != null) {
             val message = intent.getStringExtra(EXTRA_DELETE_CANCEL_MESSAGE)
-                ?: "Delete cancelled — screenshot copied to clipboard"
+                ?: getString(R.string.delete_cancelled_copied)
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
         finish()
@@ -82,7 +89,7 @@ class ScreenshotPromptActivity : ComponentActivity() {
 
         setContent {
             val prefs = ScreenshotPreferences(this)
-            BoltScreenshotTheme(themeId = prefs.themeId) {
+            ScreenMixTheme(accent = ScreenMixAccent.fromStorage(prefs.accentId)) {
                 ScreenshotPromptContent(
                     tapOutsideToDismiss = prefs.tapOutsideToDismiss,
                     onCopyDelete = {
