@@ -63,4 +63,12 @@
     <string name="screenshot_deleted">Captura eliminada</string>
     <string name="could_not_delete">No se pudo eliminar — activa Eliminación instantánea en ScreenMix</string>
     <string name="prompt_title">Captura lista</string>
+
+    <string name="keep_monitor_status_ready">El monitoreo persistente está listo. ScreenMix espera cambios del sistema y solo actúa cuando detecta una captura.</string>
+    <string name="keep_monitor_status_limited">Android puede detener ScreenMix hasta que permitas el uso de batería sin restricciones.</string>
+    <string name="battery_dialog_title">¿Mantener ScreenMix activo?</string>
+    <string name="battery_dialog_message">ScreenMix no analiza ni consulta continuamente. Permanece esperando cambios de imágenes del sistema, trabaja cuando detecta una captura y luego vuelve a esperar. Permitir batería sin restricciones ayuda a mantener el monitoreo después de quitar la app de Recientes o reiniciar el teléfono. Esto puede usar algo más de batería porque Android aplicará menos límites en segundo plano.</string>
+    <string name="battery_dialog_continue">CONTINUAR</string>
+    <string name="battery_dialog_cancel">CANCELAR</string>
+    <string name="open_battery_settings">ABRIR AJUSTES DE BATERÍA</string>
 </resources>
