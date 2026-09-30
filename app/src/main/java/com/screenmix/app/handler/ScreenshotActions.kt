@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.screenmix.app.R
 import com.screenmix.app.ScreenshotPromptActivity
 import java.io.File
 
@@ -28,27 +29,33 @@ object ScreenshotActions {
     }
 
     fun copyAndSave(context: Context, uri: Uri) {
+        val localized = LocaleHelper.wrap(context)
         if (!copyToClipboard(context, uri)) {
-            Toast.makeText(context, "Could not copy screenshot", Toast.LENGTH_SHORT).show()
+            Toast.makeText(localized, localized.getString(R.string.could_not_copy), Toast.LENGTH_SHORT).show()
             return
         }
         markHandled(context, uri)
-        Toast.makeText(context, "Copied to clipboard", Toast.LENGTH_SHORT).show()
+        Toast.makeText(localized, localized.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
     }
 
     fun copyAndDelete(context: Context, uri: Uri) {
+        val localized = LocaleHelper.wrap(context)
         val clipboardUri = createTemporarySnapshot(context, uri)
         if (clipboardUri == null || !copyToClipboard(context, clipboardUri)) {
-            Toast.makeText(context, "Could not copy screenshot", Toast.LENGTH_SHORT).show()
+            Toast.makeText(localized, localized.getString(R.string.could_not_copy), Toast.LENGTH_SHORT).show()
             return
         }
 
         if (deleteScreenshotSilently(context, uri)) {
-            Toast.makeText(context, "Copied and deleted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(localized, localized.getString(R.string.copied_and_deleted), Toast.LENGTH_SHORT).show()
             return
         }
 
-        requestDeleteWithSystemDialog(context, uri, successMessage = "Copied and deleted")
+        requestDeleteWithSystemDialog(
+            context,
+            uri,
+            successMessage = localized.getString(R.string.copied_and_deleted),
+        )
     }
 
     fun dismissScreenshot(context: Context, uri: Uri) {
@@ -124,8 +131,9 @@ object ScreenshotActions {
     }
 
     fun deleteScreenshot(context: Context, uri: Uri) {
+        val localized = LocaleHelper.wrap(context)
         if (deleteScreenshotSilently(context, uri)) {
-            Toast.makeText(context, "Screenshot deleted", Toast.LENGTH_SHORT).show()
+            Toast.makeText(localized, localized.getString(R.string.screenshot_deleted), Toast.LENGTH_SHORT).show()
             return
         }
         requestDeleteWithSystemDialog(context, uri)
@@ -155,9 +163,15 @@ object ScreenshotActions {
     private fun requestDeleteWithSystemDialog(
         context: Context,
         uri: Uri,
-        deleteOnlyMessage: String = "Delete cancelled — screenshot copied to clipboard",
-        successMessage: String = "Screenshot deleted",
+        deleteOnlyMessage: String? = null,
+        successMessage: String? = null,
     ) {
+        val localized = LocaleHelper.wrap(context)
+        val resolvedCancelMessage =
+            deleteOnlyMessage ?: localized.getString(R.string.delete_cancelled_copied)
+        val resolvedSuccessMessage =
+            successMessage ?: localized.getString(R.string.screenshot_deleted)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val pending = MediaStore.createDeleteRequest(context.contentResolver, listOf(uri))
             val intent = Intent(context, ScreenshotPromptActivity::class.java).apply {
@@ -165,16 +179,16 @@ object ScreenshotActions {
                 putExtra(ScreenshotPromptActivity.EXTRA_URI, uri.toString())
                 putExtra(ScreenshotPromptActivity.EXTRA_DELETE_ONLY, true)
                 putExtra(ScreenshotPromptActivity.EXTRA_DELETE_INTENT, pending.intentSender)
-                putExtra(ScreenshotPromptActivity.EXTRA_DELETE_CANCEL_MESSAGE, deleteOnlyMessage)
-                putExtra(ScreenshotPromptActivity.EXTRA_DELETE_SUCCESS_MESSAGE, successMessage)
+                putExtra(ScreenshotPromptActivity.EXTRA_DELETE_CANCEL_MESSAGE, resolvedCancelMessage)
+                putExtra(ScreenshotPromptActivity.EXTRA_DELETE_SUCCESS_MESSAGE, resolvedSuccessMessage)
             }
             context.startActivity(intent)
             return
         }
 
         Toast.makeText(
-            context,
-            "Could not delete — enable All files access in ScreenMix settings",
+            localized,
+            localized.getString(R.string.could_not_delete),
             Toast.LENGTH_LONG,
         ).show()
     }
