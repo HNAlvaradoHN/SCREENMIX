@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -11,9 +11,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.redbolt.screenshot.R
-import com.redbolt.screenshot.ScreenshotPromptActivity
-import com.redbolt.screenshot.receiver.ScreenshotActionReceiver
+import com.screenmix.app.R
+import com.screenmix.app.ScreenshotPromptActivity
+import com.screenmix.app.receiver.ScreenshotActionReceiver
 
 object ScreenshotNotifier {
     const val MONITOR_NOTIFICATION_ID = 1001
