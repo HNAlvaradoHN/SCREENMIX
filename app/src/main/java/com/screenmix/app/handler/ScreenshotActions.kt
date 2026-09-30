@@ -75,8 +75,9 @@ object ScreenshotActions {
         onTargetChosen: (() -> Unit)? = null,
     ): Intent {
         val share = Intent(Intent.ACTION_SEND).apply {
-            type = "image/*"
+            type = context.contentResolver.getType(uri) ?: "image/*"
             putExtra(Intent.EXTRA_STREAM, uri)
+            clipData = ClipData.newRawUri("Screenshot", uri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
         val chooser = Intent.createChooser(share, null)
@@ -173,7 +174,7 @@ object ScreenshotActions {
     }
 
     fun copyAndDelete(context: Context, uri: Uri) {
-        val clipboardUri = createClipboardSnapshot(context, uri)
+        val clipboardUri = createTemporarySnapshot(context, uri)
         if (clipboardUri == null || !copyToClipboard(context, clipboardUri)) {
             Toast.makeText(context, "Could not copy screenshot", Toast.LENGTH_SHORT).show()
             return
@@ -187,7 +188,7 @@ object ScreenshotActions {
         requestDeleteWithSystemDialog(context, uri, successMessage = "Copied and deleted")
     }
 
-    private fun createClipboardSnapshot(context: Context, sourceUri: Uri): Uri? {
+    fun createTemporarySnapshot(context: Context, sourceUri: Uri): Uri? {
         cleanupClipboardCache(context)
 
         val resolver = context.contentResolver
