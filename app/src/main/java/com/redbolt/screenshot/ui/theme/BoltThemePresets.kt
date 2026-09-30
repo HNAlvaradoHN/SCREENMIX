@@ -1,8 +1,8 @@
-package com.redbolt.screenshot.ui.theme
+package com.screenmix.app.ui.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import com.redbolt.screenshot.handler.BoltThemeId
+import com.screenmix.app.handler.BoltThemeId
 
 @Immutable
 data class BoltColorScheme(
