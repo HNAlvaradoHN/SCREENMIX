@@ -41,6 +41,8 @@ A standard debug build is intended to be produced with:
 
 Build/signing setup will be finalized as part of the ScreenMix migration.
 
+GitHub Actions builds the debug APK automatically from `main` so compile errors can be caught without publishing a release.
+
 ## Automatic restart
 
 If screenshot monitoring was enabled before a reboot, ScreenMix listens for Android's `BOOT_COMPLETED` broadcast and starts the monitor service again automatically. The same recovery path is used after an app update through `MY_PACKAGE_REPLACED`.
