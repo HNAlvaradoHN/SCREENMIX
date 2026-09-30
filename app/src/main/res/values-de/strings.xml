@@ -19,6 +19,7 @@
     <string name="screenshot_detected_title">Screenshot bereit</string>
     <string name="action_copy_delete">KOPIEREN &amp; LÖSCHEN</string>
     <string name="action_copy_save">KOPIEREN &amp; SPEICHERN</string>
+    <string name="action_close">SCHLIESSEN</string>
     <string name="notification_prompt_text">Kopiere den Screenshot und wähle Löschen oder Speichern</string>
     <string name="all_files_title">SOFORT LÖSCHEN</string>
     <string name="all_files_subtitle_on">Löschaktionen funktionieren ohne zweite Bestätigung</string>
