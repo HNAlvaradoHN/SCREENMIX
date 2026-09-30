@@ -16,6 +16,8 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import java.io.File
 import com.screenmix.app.ScreenshotPromptActivity
 
 object ScreenshotActions {
@@ -171,15 +173,78 @@ object ScreenshotActions {
     }
 
     fun copyAndDelete(context: Context, uri: Uri) {
-        if (!copyToClipboard(context, uri)) {
+        val clipboardUri = createClipboardSnapshot(context, uri)
+        if (clipboardUri == null || !copyToClipboard(context, clipboardUri)) {
             Toast.makeText(context, "Could not copy screenshot", Toast.LENGTH_SHORT).show()
             return
         }
+
         if (deleteScreenshotSilently(context, uri)) {
             Toast.makeText(context, "Copied and deleted", Toast.LENGTH_SHORT).show()
             return
         }
+
         requestDeleteWithSystemDialog(context, uri, successMessage = "Copied and deleted")
+    }
+
+    private fun createClipboardSnapshot(context: Context, sourceUri: Uri): Uri? {
+        cleanupClipboardCache(context)
+
+        val resolver = context.contentResolver
+        val mimeType = resolver.getType(sourceUri).orEmpty()
+        val extension = when (mimeType) {
+            "image/jpeg" -> "jpg"
+            "image/webp" -> "webp"
+            "image/heic", "image/heif" -> "heic"
+            else -> "png"
+        }
+
+        val directory = File(context.cacheDir, CLIPBOARD_CACHE_DIR)
+        if (!directory.exists() && !directory.mkdirs()) {
+            return null
+        }
+
+        val snapshot = File(
+            directory,
+            "screenmix_clip_${System.currentTimeMillis()}.$extension",
+        )
+
+        val copied = runCatching {
+            resolver.openInputStream(sourceUri)?.use { input ->
+                snapshot.outputStream().buffered().use { output ->
+                    input.copyTo(output)
+                }
+            } ?: return@runCatching false
+            snapshot.length() > 0L
+        }.getOrDefault(false)
+
+        if (!copied) {
+            snapshot.delete()
+            return null
+        }
+
+        return runCatching {
+            FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                snapshot,
+            )
+        }.getOrElse {
+            snapshot.delete()
+            null
+        }
+    }
+
+    fun cleanupClipboardCache(context: Context) {
+        val directory = File(context.cacheDir, CLIPBOARD_CACHE_DIR)
+        if (!directory.exists()) return
+
+        val cutoff = System.currentTimeMillis() - CLIPBOARD_CACHE_MAX_AGE_MS
+        directory.listFiles()?.forEach { file ->
+            if (file.isFile && file.lastModified() < cutoff) {
+                runCatching { file.delete() }
+            }
+        }
     }
 
     fun deleteScreenshotSilently(context: Context, uri: Uri): Boolean {
@@ -269,4 +334,6 @@ object ScreenshotActions {
     private val shareDeleteHandler = Handler(Looper.getMainLooper())
     private var pendingShareDeleteRunnable: Runnable? = null
     private const val SHARE_DELETE_DELAY_MS = 1_500L
+    private const val CLIPBOARD_CACHE_DIR = "clipboard"
+    private const val CLIPBOARD_CACHE_MAX_AGE_MS = 24L * 60L * 60L * 1_000L
 }
