@@ -19,6 +19,7 @@
     <string name="screenshot_detected_title">Captura pronta</string>
     <string name="action_copy_delete">COPIAR E EXCLUIR</string>
     <string name="action_copy_save">COPIAR E SALVAR</string>
+    <string name="action_close">FECHAR</string>
     <string name="notification_prompt_text">Copie a captura e escolha se deseja excluí-la ou salvá-la</string>
     <string name="all_files_title">EXCLUSÃO INSTANTÂNEA</string>
     <string name="all_files_subtitle_on">As ações de exclusão funcionam sem uma segunda confirmação</string>
