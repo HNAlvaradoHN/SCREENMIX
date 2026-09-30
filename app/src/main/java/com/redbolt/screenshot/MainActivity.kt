@@ -1,4 +1,4 @@
-package com.redbolt.screenshot
+package com.screenmix.app
 
 import android.Manifest
 import android.content.Intent
@@ -47,19 +47,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import com.redbolt.screenshot.accessibility.SystemPreviewDismissAccessibilityService
-import com.redbolt.screenshot.handler.BoltThemeId
-import com.redbolt.screenshot.handler.PromptAction
-import com.redbolt.screenshot.handler.PromptPosition
-import com.redbolt.screenshot.handler.ScreenshotActions
-import com.redbolt.screenshot.handler.ScreenshotPreferences
-import com.redbolt.screenshot.handler.ScreenshotPromptLauncher
-import com.redbolt.screenshot.service.ScreenshotMonitorService
-import com.redbolt.screenshot.ui.theme.BoltScreenshotTheme
-import com.redbolt.screenshot.ui.theme.BoltTheme
-import com.redbolt.screenshot.ui.theme.BoltThemePresets
-import com.redbolt.screenshot.ui.theme.BodyFont
-import com.redbolt.screenshot.ui.theme.DotoFont
+import com.screenmix.app.accessibility.SystemPreviewDismissAccessibilityService
+import com.screenmix.app.handler.BoltThemeId
+import com.screenmix.app.handler.PromptAction
+import com.screenmix.app.handler.PromptPosition
+import com.screenmix.app.handler.ScreenshotActions
+import com.screenmix.app.handler.ScreenshotPreferences
+import com.screenmix.app.handler.ScreenshotPromptLauncher
+import com.screenmix.app.service.ScreenshotMonitorService
+import com.screenmix.app.ui.theme.BoltScreenshotTheme
+import com.screenmix.app.ui.theme.BoltTheme
+import com.screenmix.app.ui.theme.BoltThemePresets
+import com.screenmix.app.ui.theme.BodyFont
+import com.screenmix.app.ui.theme.DotoFont
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
@@ -127,13 +127,13 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Top,
                 ) {
                     Text(
-                        text = "BOLT",
+                        text = "SCREEN",
                         fontFamily = DotoFont,
                         color = colors.accent,
                         fontSize = 18.sp,
                     )
                     Text(
-                        text = "SHOT",
+                        text = "MIX",
                         fontFamily = DotoFont,
                         color = colors.textPrimary,
                         fontSize = 18.sp,
