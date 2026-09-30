@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.accessibility
+package com.screenmix.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
@@ -8,7 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.accessibility.AccessibilityEvent
-import com.redbolt.screenshot.handler.ScreenshotPreferences
+import com.screenmix.app.handler.ScreenshotPreferences
 
 class SystemPreviewDismissAccessibilityService : AccessibilityService() {
     private val handler = Handler(Looper.getMainLooper())
