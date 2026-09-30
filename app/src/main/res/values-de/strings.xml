@@ -66,7 +66,7 @@
 
     <string name="keep_monitor_status_ready">Die dauerhafte Überwachung ist bereit. ScreenMix wartet auf Systemänderungen und reagiert nur, wenn ein Screenshot erkannt wird.</string>
     <string name="keep_monitor_status_limited">Android kann ScreenMix stoppen, solange uneingeschränkte Akkunutzung nicht erlaubt ist.</string>
-    <string name="battery_dialog_title">ScreenMix aktiv halten?</string>
+    <string name="battery_dialog_title">ScreenMix aktiv halten</string>
     <string name="battery_dialog_message">ScreenMix bleibt verfügbar, auch nachdem du die App geschlossen oder das Telefon neu gestartet hast. ScreenMix bleibt im Ruhezustand und reagiert nur, wenn ein Screenshot erkannt wird. Danach wartet es wieder und arbeitet nicht dauerhaft im Hintergrund.</string>
     <string name="battery_dialog_continue">WEITER</string>
     <string name="battery_dialog_cancel">ABBRECHEN</string>
