@@ -1,13 +1,13 @@
-package com.redbolt.screenshot.receiver
+package com.screenmix.app.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.redbolt.screenshot.ScreenshotApplication
-import com.redbolt.screenshot.handler.ScreenshotActions
-import com.redbolt.screenshot.handler.ScreenshotNotifier
-import com.redbolt.screenshot.service.ScreenshotMonitorService
+import com.screenmix.app.ScreenshotApplication
+import com.screenmix.app.handler.ScreenshotActions
+import com.screenmix.app.handler.ScreenshotNotifier
+import com.screenmix.app.service.ScreenshotMonitorService
 
 class ScreenshotActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -30,11 +30,11 @@ class ScreenshotActionReceiver : BroadcastReceiver() {
     }
 
     companion object {
-        const val ACTION_COPY_DELETE = "com.redbolt.screenshot.COPY_DELETE"
-        const val ACTION_COPY_SAVE = "com.redbolt.screenshot.COPY_SAVE"
-        const val ACTION_DISMISS = "com.redbolt.screenshot.DISMISS"
-        const val ACTION_SHARE_DELETE = "com.redbolt.screenshot.SHARE_DELETE"
-        const val ACTION_SHARE_SAVE = "com.redbolt.screenshot.SHARE_SAVE"
+        const val ACTION_COPY_DELETE = "com.screenmix.app.COPY_DELETE"
+        const val ACTION_COPY_SAVE = "com.screenmix.app.COPY_SAVE"
+        const val ACTION_DISMISS = "com.screenmix.app.DISMISS"
+        const val ACTION_SHARE_DELETE = "com.screenmix.app.SHARE_DELETE"
+        const val ACTION_SHARE_SAVE = "com.screenmix.app.SHARE_SAVE"
         const val EXTRA_URI = "extra_uri"
     }
 }
