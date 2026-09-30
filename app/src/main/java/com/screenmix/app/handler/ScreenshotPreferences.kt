@@ -37,9 +37,6 @@ class ScreenshotPreferences(context: Context) {
         get() = BoltThemeId.fromStorage(prefs.getString(KEY_THEME_ID, null))
         set(value) = prefs.edit().putString(KEY_THEME_ID, value.storageValue).apply()
 
-    var copyRowOnTop: Boolean
-        get() = prefs.getBoolean(KEY_COPY_ROW_ON_TOP, true)
-        set(value) = prefs.edit().putBoolean(KEY_COPY_ROW_ON_TOP, value).apply()
 
     var dismissSystemPreview: Boolean
         get() = prefs.getBoolean(KEY_DISMISS_SYSTEM_PREVIEW, false)
@@ -75,7 +72,6 @@ class ScreenshotPreferences(context: Context) {
         private const val KEY_TAP_OUTSIDE_DISMISS = "tap_outside_dismiss"
         private const val KEY_DETECTION_DELAY_MS = "detection_delay_ms"
         private const val KEY_THEME_ID = "theme_id"
-        private const val KEY_COPY_ROW_ON_TOP = "copy_row_on_top"
         private const val KEY_DISMISS_SYSTEM_PREVIEW = "dismiss_system_preview"
         private const val KEY_SYSTEM_PREVIEW_DISMISS_DELAY_MS = "system_preview_dismiss_delay_ms"
         private const val KEY_SAVED_URIS = "saved_uris"
