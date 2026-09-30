@@ -28,7 +28,22 @@ class ScreenshotMonitorService : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        return Service.START_STICKY
+        val prefs = ScreenshotPreferences(this)
+        return if (prefs.keepMonitorActive && prefs.isMonitorEnabled) {
+            Service.START_STICKY
+        } else {
+            Service.START_NOT_STICKY
+        }
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        val prefs = ScreenshotPreferences(this)
+        if (prefs.keepMonitorActive && prefs.isMonitorEnabled) {
+            if (detector == null) {
+                detector = ScreenshotDetector(this, ::onScreenshotDetected).also { it.start() }
+            }
+        }
+        super.onTaskRemoved(rootIntent)
     }
 
     override fun onDestroy() {
