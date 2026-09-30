@@ -11,7 +11,7 @@ import com.screenmix.app.accessibility.SystemPreviewDismissAccessibilityService
 import com.screenmix.app.detector.ScreenshotDetector
 import com.screenmix.app.handler.ScreenshotNotifier
 import com.screenmix.app.handler.ScreenshotPreferences
-import com.screenmix.app.overlay.ScreenshotBubbleOverlay
+import com.screenmix.app.handler.ScreenshotPromptLauncher
 
 class ScreenshotMonitorService : LifecycleService() {
     private var detector: ScreenshotDetector? = null
@@ -47,7 +47,6 @@ class ScreenshotMonitorService : LifecycleService() {
     }
 
     override fun onDestroy() {
-        ScreenshotBubbleOverlay.hide(this, markHandled = false)
         detector?.stop()
         detector = null
         super.onDestroy()
@@ -62,12 +61,7 @@ class ScreenshotMonitorService : LifecycleService() {
             ScreenshotNotifier.showPrompt(this, uri)
             return
         }
-
-        if (ScreenshotBubbleOverlay.show(this, uri)) {
-            return
-        }
-
-        ScreenshotNotifier.showPrompt(this, uri)
+        ScreenshotPromptLauncher.show(this, uri)
     }
 
     companion object {

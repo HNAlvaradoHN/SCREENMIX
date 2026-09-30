@@ -16,10 +16,6 @@ object ScreenshotPromptLauncher {
     val testUri: Uri = Uri.parse("content://com.screenmix.app/test")
 
     fun show(context: Context, uri: Uri) {
-        showPanel(context, uri)
-    }
-
-    fun showPanel(context: Context, uri: Uri) {
         present(context.applicationContext, uri)
     }
 
