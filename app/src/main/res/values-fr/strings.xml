@@ -19,6 +19,7 @@
     <string name="screenshot_detected_title">Capture prête</string>
     <string name="action_copy_delete">COPIER ET SUPPRIMER</string>
     <string name="action_copy_save">COPIER ET GARDER</string>
+    <string name="action_close">FERMER</string>
     <string name="notification_prompt_text">Copiez la capture puis choisissez de la supprimer ou de la conserver</string>
     <string name="all_files_title">SUPPRESSION INSTANTANÉE</string>
     <string name="all_files_subtitle_on">Les actions de suppression fonctionnent sans seconde confirmation</string>
