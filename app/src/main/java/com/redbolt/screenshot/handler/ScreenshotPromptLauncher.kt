@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
 import android.app.ActivityOptions
 import android.content.Context
@@ -9,11 +9,11 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.provider.Settings
-import com.redbolt.screenshot.ScreenshotPromptActivity
-import com.redbolt.screenshot.overlay.ScreenshotOverlay
+import com.screenmix.app.ScreenshotPromptActivity
+import com.screenmix.app.overlay.ScreenshotOverlay
 
 object ScreenshotPromptLauncher {
-    val testUri: Uri = Uri.parse("content://com.redbolt.screenshot/test")
+    val testUri: Uri = Uri.parse("content://com.screenmix.app/test")
 
     fun show(context: Context, uri: Uri) {
         present(context.applicationContext, uri)
