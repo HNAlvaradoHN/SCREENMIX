@@ -21,6 +21,7 @@
     <string name="screenshot_detected_title">Screenshot ready</string>
     <string name="action_copy_delete">COPY &amp; DELETE</string>
     <string name="action_copy_save">COPY &amp; SAVE</string>
+    <string name="action_close">CLOSE</string>
     <string name="notification_prompt_text">Copy the screenshot and choose whether to delete or save it</string>
 
     <string name="all_files_title">INSTANT DELETE</string>
