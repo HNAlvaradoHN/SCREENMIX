@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ScreenMix</string>
-    <string name="monitor_notification_title">Screenshot monitor on</string>
+    <string name="app_tagline">Copy each screenshot, then choose whether to save or delete it.</string>
+    <string name="monitor_screenshots_title">MONITOR SCREENSHOTS</string>
+    <string name="monitor_running">Running in background</string>
+    <string name="monitor_needs_access">Needs photo access</string>
+    <string name="keep_monitor_title">KEEP MONITOR ACTIVE</string>
+    <string name="keep_monitor_subtitle">Keep monitoring after ScreenMix is removed from Recents</string>
+    <string name="popup_prompt_title">POP-UP PROMPT</string>
+    <string name="popup_prompt_subtitle">Show actions right after each screenshot</string>
+
+    <string name="language_title">LANGUAGE</string>
+    <string name="language_subtitle">Choose the language used by ScreenMix</string>
+    <string name="accent_title">ACCENT COLOR</string>
+    <string name="accent_subtitle">Choose a color for ScreenMix, the prompt and notifications</string>
+
+    <string name="monitor_notification_title">ScreenMix is active</string>
     <string name="monitor_notification_text">Watching for new screenshots</string>
-    <string name="screenshot_detected_title">Screenshot captured</string>
+    <string name="screenshot_detected_title">Screenshot ready</string>
     <string name="action_copy_delete">COPY &amp; DELETE</string>
     <string name="action_copy_save">COPY &amp; SAVE</string>
     <string name="notification_prompt_text">Copy the screenshot and choose whether to delete or save it</string>
+
     <string name="all_files_title">INSTANT DELETE</string>
     <string name="all_files_subtitle_on">Delete actions work without a second prompt</string>
-    <string name="all_files_subtitle_off">Enable all-files access to skip the Android delete confirm</string>
+    <string name="all_files_subtitle_off">Enable all-files access to skip the Android delete confirmation</string>
     <string name="enable_all_files">ENABLE INSTANT DELETE</string>
     <string name="system_preview_note">The Android corner preview is system-controlled. Enable Dismiss System Preview below to auto-hide it via accessibility.</string>
     <string name="dismiss_preview_title">DISMISS SYSTEM PREVIEW</string>
-    <string name="dismiss_preview_subtitle_on">Accessibility on — auto-dismisses the Android corner preview</string>
+    <string name="dismiss_preview_subtitle_on">Accessibility on — automatically dismisses the Android corner preview</string>
     <string name="dismiss_preview_subtitle_off">Optional — uses accessibility to dismiss the corner preview</string>
     <string name="enable_dismiss_preview">ENABLE IN ACCESSIBILITY</string>
     <string name="dismiss_preview_delay_title">PREVIEW DISMISS DELAY</string>
     <string name="dismiss_preview_delay_subtitle">How long to wait before dismissing the system preview</string>
     <string name="accessibility_dismiss_preview_description">Dismisses the Android screenshot corner preview a few seconds after you take a screenshot. Used only when enabled in ScreenMix settings.</string>
-    <string name="channel_monitor">Monitor</string>
-    <string name="channel_prompt">Screenshot prompt</string>
+
+    <string name="channel_monitor">ScreenMix monitor</string>
+    <string name="channel_prompt">Screenshot actions</string>
     <string name="overlay_permission_title">FLOATING PROMPT</string>
-    <string name="overlay_permission_subtitle_on">Shows over Dynamic Spot / other apps</string>
-    <string name="overlay_permission_subtitle_off">Recommended — enable display over other apps</string>
+    <string name="overlay_permission_subtitle_on">Shows over other apps</string>
+    <string name="overlay_permission_subtitle_off">Recommended — allow ScreenMix to appear over other apps</string>
     <string name="enable_overlay">ENABLE FLOATING PROMPT</string>
-    <string name="section_customization">CUSTOMIZATION</string>
-    <string name="section_theme">THEME</string>
-    <string name="theme_subtitle">Accent color themes for the prompt and settings</string>
+
+    <string name="section_customization">BEHAVIOR</string>
+    <string name="section_appearance">APPEARANCE</string>
     <string name="prompt_position_title">PROMPT POSITION</string>
-    <string name="prompt_position_subtitle">Adjust if the prompt overlaps your system UI</string>
+    <string name="prompt_position_subtitle">Choose where the screenshot actions appear</string>
     <string name="position_top">TOP</string>
     <string name="position_center">CENTER</string>
     <string name="position_bottom">BOTTOM</string>
@@ -43,4 +59,13 @@
     <string name="test_prompt">TEST PROMPT</string>
     <string name="test_prompt_subtitle">Preview placement without taking a screenshot</string>
     <string name="version_label">Version %1$s</string>
+    <string name="notification_permission_note">Enable notifications so ScreenMix can show screenshot actions.</string>
+
+    <string name="could_not_copy">Could not copy screenshot</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="copied_and_deleted">Copied and deleted</string>
+    <string name="delete_cancelled_copied">Delete cancelled — screenshot remains copied</string>
+    <string name="screenshot_deleted">Screenshot deleted</string>
+    <string name="could_not_delete">Could not delete — enable Instant Delete in ScreenMix settings</string>
+    <string name="prompt_title">Screenshot ready</string>
 </resources>
