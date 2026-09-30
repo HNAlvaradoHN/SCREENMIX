@@ -1,17 +1,13 @@
 package com.screenmix.app.handler
 
 import android.content.ClipData
-import android.content.ComponentName
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.app.PendingIntent
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
-import android.os.ResultReceiver
 import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.Toast
@@ -19,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
 import com.screenmix.app.ScreenshotPromptActivity
+import com.screenmix.app.receiver.ScreenshotActionReceiver
 
 object ScreenshotActions {
     fun copyToClipboard(context: Context, uri: Uri): Boolean {
@@ -57,50 +54,54 @@ object ScreenshotActions {
             putExtra(ScreenshotPromptActivity.EXTRA_URI, uri.toString())
             putExtra(ScreenshotPromptActivity.EXTRA_SHARE_FLOW, deleteAfterShare)
         }
-        context.startActivity(intent)
+        runCatching { context.startActivity(intent) }
+            .onSuccess { acknowledgeScreenshot(context, uri) }
+            .onFailure {
+                Toast.makeText(context, "Could not open share menu", Toast.LENGTH_SHORT).show()
+            }
     }
 
-    fun onShareCompleted(context: Context, uri: Uri, deleteAfterShare: Boolean) {
+    fun onShareTargetChosen(context: Context, uri: Uri, deleteAfterShare: Boolean) {
         acknowledgeScreenshot(context, uri)
         if (deleteAfterShare) {
             executeShareDelete(context, uri)
-            return
+        } else {
+            Toast.makeText(context, "Shared and saved", Toast.LENGTH_SHORT).show()
         }
-        Toast.makeText(context, "Shared and saved", Toast.LENGTH_SHORT).show()
     }
 
     fun buildShareChooserIntent(
         context: Context,
-        uri: Uri,
-        onTargetChosen: (() -> Unit)? = null,
+        shareUri: Uri,
+        originalUri: Uri,
+        deleteAfterShare: Boolean,
     ): Intent {
         val share = Intent(Intent.ACTION_SEND).apply {
-            type = context.contentResolver.getType(uri) ?: "image/*"
-            putExtra(Intent.EXTRA_STREAM, uri)
-            clipData = ClipData.newRawUri("Screenshot", uri)
+            type = context.contentResolver.getType(shareUri) ?: "image/*"
+            putExtra(Intent.EXTRA_STREAM, shareUri)
+            clipData = ClipData.newRawUri("Screenshot", shareUri)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
-        val chooser = Intent.createChooser(share, null)
-        if (onTargetChosen != null) {
-            val receiver = object : ResultReceiver(Handler(Looper.getMainLooper())) {
-                override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-                    if (resultData?.chosenComponent() != null) {
-                        onTargetChosen()
-                    }
-                }
-            }
-            chooser.putExtra(Intent.EXTRA_RESULT_RECEIVER, receiver)
-        }
-        return chooser
-    }
 
-    private fun Bundle.chosenComponent(): ComponentName? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getParcelable(Intent.EXTRA_CHOSEN_COMPONENT, ComponentName::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            getParcelable(Intent.EXTRA_CHOSEN_COMPONENT)
+        val callbackIntent = Intent(context, ScreenshotActionReceiver::class.java).apply {
+            action = ScreenshotActionReceiver.ACTION_SHARE_TARGET_CHOSEN
+            putExtra(ScreenshotActionReceiver.EXTRA_URI, originalUri.toString())
+            putExtra(ScreenshotActionReceiver.EXTRA_DELETE_AFTER_SHARE, deleteAfterShare)
         }
+        val callbackFlags = PendingIntent.FLAG_UPDATE_CURRENT or
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                PendingIntent.FLAG_MUTABLE
+            } else {
+                0
+            }
+        val callback = PendingIntent.getBroadcast(
+            context,
+            (originalUri.toString() + deleteAfterShare).hashCode(),
+            callbackIntent,
+            callbackFlags,
+        )
+
+        return Intent.createChooser(share, null, callback.intentSender)
     }
 
     fun acknowledgeScreenshot(context: Context, uri: Uri) {
@@ -133,32 +134,18 @@ object ScreenshotActions {
         ).show()
     }
 
-    fun cancelScheduledShareDelete() {
-        // Kept for compatibility with the share chooser cancellation path.
-    }
-
     fun executeShareDelete(context: Context, uri: Uri) {
-        val prefs = ScreenshotPreferences(context)
         if (deleteScreenshotSilently(context, uri)) {
-            prefs.pendingShareDeleteUri = null
             Toast.makeText(context, "Shared and deleted", Toast.LENGTH_SHORT).show()
             return
         }
 
-        prefs.pendingShareDeleteUri = uri.toString()
         launchDeleteConfirmation(
             context,
             uri,
             cancelMessage = "Delete cancelled — screenshot was shared",
             successMessage = "Shared and deleted",
         )
-    }
-
-    fun completePendingShareDelete(context: Context): Boolean {
-        val prefs = ScreenshotPreferences(context)
-        val uriString = prefs.pendingShareDeleteUri ?: return false
-        executeShareDelete(context, Uri.parse(uriString))
-        return true
     }
 
     fun copyAndDelete(context: Context, uri: Uri) {
@@ -168,6 +155,7 @@ object ScreenshotActions {
             return
         }
 
+        acknowledgeScreenshot(context, uri)
         if (deleteScreenshotSilently(context, uri)) {
             Toast.makeText(context, "Copied and deleted", Toast.LENGTH_SHORT).show()
             return
