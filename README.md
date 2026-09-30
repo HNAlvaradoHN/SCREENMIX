@@ -2,7 +2,7 @@
 
 ScreenMix is an independent Android screenshot workflow project.
 
-It monitors newly created screenshots and presents quick actions to copy, share, save, or delete them. The current development goal is to improve clipboard reliability for **Copy & Delete** while keeping the original screenshot out of the gallery.
+It monitors newly created screenshots and presents two focused actions: **Copy & Delete** and **Copy & Save**. Sharing actions have been intentionally removed to keep the workflow simple and reliable.
 
 ## Project status
 
@@ -51,11 +51,11 @@ A device reboot does not normally require the user to grant ScreenMix's runtime 
 
 ## Development priorities
 
-1. Complete the independent ScreenMix application identity.
-2. Repair **Copy & Delete** so the clipboard remains usable after the gallery screenshot is removed.
-3. Add safe temporary-file cleanup.
-4. Build and test a separate ScreenMix APK on Android.
-5. Verify behavior with multiple keyboards and target applications.
+1. Keep **Copy & Delete** reliable after the original gallery image is removed.
+2. Keep **Copy & Save** unchanged and dependable.
+3. Maintain safe temporary-file cleanup.
+4. Keep screenshot monitoring reliable across app restarts and device reboots.
+5. Build and test ScreenMix independently on Android.
 
 ## License
 
