@@ -62,14 +62,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
     private var shareChooserActive = false
     private var chooserDismissCheck: Runnable? = null
 
-    override fun onStop() {
-        super.onStop()
-        if (!shareHandled && pendingUri != null &&
-            (shareChooserReturned || shareChooserActive)
-        ) {
-            onShareInitiated(pendingUri!!)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,9 +150,21 @@ class ScreenshotPromptActivity : ComponentActivity() {
         shareTargetChosen = false
         shareChooserReturned = false
         shareHandled = false
+
+        val shareUri = if (deleteAfterShare) {
+            ScreenshotActions.createTemporarySnapshot(this, uri)
+        } else {
+            uri
+        }
+
+        if (shareUri == null) {
+            Toast.makeText(this, "Could not prepare screenshot for sharing", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         shareChooserActive = true
         shareLauncher.launch(
-            ScreenshotActions.buildShareChooserIntent(this, uri) {
+            ScreenshotActions.buildShareChooserIntent(this, shareUri) {
                 shareTargetChosen = true
                 onShareInitiated(uri)
             },
