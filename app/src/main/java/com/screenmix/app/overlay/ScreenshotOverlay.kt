@@ -15,11 +15,13 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.screenmix.app.handler.LocaleHelper
 import com.screenmix.app.handler.ScreenshotActions
 import com.screenmix.app.handler.ScreenshotPreferences
 import com.screenmix.app.handler.ScreenshotPromptLauncher
 import com.screenmix.app.ui.prompt.ScreenshotPromptContent
-import com.screenmix.app.ui.theme.BoltScreenshotTheme
+import com.screenmix.app.ui.theme.ScreenMixAccent
+import com.screenmix.app.ui.theme.ScreenMixTheme
 
 object ScreenshotOverlay {
     private var composeView: ComposeView? = null
@@ -29,6 +31,7 @@ object ScreenshotOverlay {
 
     fun show(context: Context, uri: Uri): Boolean {
         hide(context)
+        val uiContext = LocaleHelper.wrap(context)
         val windowManager = context.getSystemService(WindowManager::class.java) ?: return false
 
         return runCatching {
@@ -38,12 +41,12 @@ object ScreenshotOverlay {
             owner.handleLifecycleEvent(Lifecycle.Event.ON_START)
             owner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
-            val view = ComposeView(context).apply {
+            val view = ComposeView(uiContext).apply {
                 setViewTreeLifecycleOwner(owner)
                 setViewTreeSavedStateRegistryOwner(owner)
                 setContent {
                     val prefs = ScreenshotPreferences(context)
-                    BoltScreenshotTheme(themeId = prefs.themeId) {
+                    ScreenMixTheme(accent = ScreenMixAccent.fromStorage(prefs.accentId)) {
                         ScreenshotPromptContent(
                             overlayMode = true,
                             position = prefs.promptPosition,
