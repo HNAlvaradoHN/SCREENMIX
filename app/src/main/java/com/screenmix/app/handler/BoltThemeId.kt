@@ -1,7 +1,7 @@
 package com.screenmix.app.handler
 
 enum class BoltThemeId(val storageValue: String, val displayName: String) {
-    BOLT_RED("bolt_red", "BOLT RED"),
+    BOLT_RED("bolt_red", "MIX RED"),
     GLYPH("glyph", "GLYPH"),
     MONO("mono", "MONO"),
     ASH("ash", "ASH"),
