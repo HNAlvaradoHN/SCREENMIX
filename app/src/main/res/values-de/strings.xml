@@ -50,7 +50,7 @@
     <string name="tap_outside_title">AUSSERHALB TIPPEN ZUM SCHLIESSEN</string>
     <string name="tap_outside_subtitle">Schließe das Menü durch Tippen auf den Bereich außerhalb</string>
     <string name="detection_delay_title">ERKENNUNGSVERZÖGERUNG</string>
-    <string name="detection_delay_subtitle">Erhöhe den Wert, wenn ScreenMix erscheint, bevor der Screenshot gespeichert ist</string>
+    <string name="detection_delay_subtitle">Zusätzliche Verzögerung, nachdem ScreenMix bestätigt hat, dass der Screenshot stabil ist</string>
     <string name="detection_delay_value">%1$d ms</string>
     <string name="test_prompt">MENÜ TESTEN</string>
     <string name="test_prompt_subtitle">Position ohne Screenshot testen</string>
@@ -67,7 +67,7 @@
     <string name="keep_monitor_status_ready">Die dauerhafte Überwachung ist bereit. ScreenMix wartet auf Systemänderungen und reagiert nur, wenn ein Screenshot erkannt wird.</string>
     <string name="keep_monitor_status_limited">Android kann ScreenMix stoppen, solange uneingeschränkte Akkunutzung nicht erlaubt ist.</string>
     <string name="battery_dialog_title">ScreenMix aktiv halten?</string>
-    <string name="battery_dialog_message">ScreenMix scannt oder prüft nicht ständig. Es wartet auf Medienänderungen des Systems, arbeitet bei einem erkannten Screenshot und wartet danach wieder. Uneingeschränkte Akkunutzung hilft, die Überwachung nach dem Entfernen aus „Letzte Apps“ oder nach einem Neustart beizubehalten. Dies kann etwas mehr Akku verbrauchen, weil Android weniger Hintergrundbeschränkungen anwendet.</string>
+    <string name="battery_dialog_message">ScreenMix bleibt verfügbar, auch nachdem du die App geschlossen oder das Telefon neu gestartet hast. ScreenMix bleibt im Ruhezustand und reagiert nur, wenn ein Screenshot erkannt wird. Danach wartet es wieder und arbeitet nicht dauerhaft im Hintergrund.</string>
     <string name="battery_dialog_continue">WEITER</string>
     <string name="battery_dialog_cancel">ABBRECHEN</string>
     <string name="open_battery_settings">AKKUEINSTELLUNGEN ÖFFNEN</string>
