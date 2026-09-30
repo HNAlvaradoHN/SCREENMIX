@@ -531,7 +531,6 @@ class MainActivity : ComponentActivity() {
         if (monitorEnabled && hasMediaPermission) {
             ScreenshotMonitorService.start(this)
         }
-        ScreenshotActions.completePendingShareDelete(this)
     }
 
     private fun loadPreferences() {
