@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
 import android.content.ClipData
 import android.content.ComponentName
@@ -16,7 +16,7 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.redbolt.screenshot.ScreenshotPromptActivity
+import com.screenmix.app.ScreenshotPromptActivity
 
 object ScreenshotActions {
     fun copyToClipboard(context: Context, uri: Uri): Boolean {
@@ -125,7 +125,7 @@ object ScreenshotActions {
         }
         Toast.makeText(
             context,
-            "Could not delete — enable All files access in BoltShot settings",
+            "Could not delete — enable All files access in ScreenMix settings",
             Toast.LENGTH_LONG,
         ).show()
     }
