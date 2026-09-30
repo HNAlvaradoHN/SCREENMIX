@@ -4,10 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.screenmix.app.ScreenshotApplication
 import com.screenmix.app.handler.ScreenshotActions
 import com.screenmix.app.handler.ScreenshotNotifier
-import com.screenmix.app.service.ScreenshotMonitorService
 
 class ScreenshotActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -39,12 +37,3 @@ class ScreenshotActionReceiver : BroadcastReceiver() {
     }
 }
 
-class BootReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
-        val app = context.applicationContext as ScreenshotApplication
-        if (app.preferences.isMonitorEnabled) {
-            ScreenshotMonitorService.start(context)
-        }
-    }
-}
