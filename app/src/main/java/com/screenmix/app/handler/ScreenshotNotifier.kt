@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat
 import com.screenmix.app.R
 import com.screenmix.app.ScreenshotPromptActivity
 import com.screenmix.app.receiver.ScreenshotActionReceiver
+import com.screenmix.app.ui.theme.ScreenMixAccent
 
 object ScreenshotNotifier {
     const val MONITOR_NOTIFICATION_ID = 1001
@@ -23,18 +24,19 @@ object ScreenshotNotifier {
 
     fun ensureChannels(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        val localized = LocaleHelper.wrap(context)
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
         manager.createNotificationChannel(
             NotificationChannel(
                 CHANNEL_MONITOR,
-                context.getString(R.string.channel_monitor),
+                localized.getString(R.string.channel_monitor),
                 NotificationManager.IMPORTANCE_LOW,
             ),
         )
         manager.createNotificationChannel(
             NotificationChannel(
                 CHANNEL_PROMPT,
-                context.getString(R.string.channel_prompt),
+                localized.getString(R.string.channel_prompt),
                 NotificationManager.IMPORTANCE_HIGH,
             ).apply {
                 setBypassDnd(true)
@@ -44,10 +46,13 @@ object ScreenshotNotifier {
 
     fun buildMonitorNotification(context: Context): Notification {
         ensureChannels(context)
+        val localized = LocaleHelper.wrap(context)
+        val accent = ScreenMixAccent.fromStorage(ScreenshotPreferences(context).accentId)
         return NotificationCompat.Builder(context, CHANNEL_MONITOR)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(context.getString(R.string.monitor_notification_title))
-            .setContentText(context.getString(R.string.monitor_notification_text))
+            .setContentTitle(localized.getString(R.string.monitor_notification_title))
+            .setContentText(localized.getString(R.string.monitor_notification_text))
+            .setColor(accent.notificationArgb)
             .setOngoing(true)
             .setSilent(true)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
@@ -56,6 +61,8 @@ object ScreenshotNotifier {
 
     fun showPrompt(context: Context, uri: Uri, fullScreen: Boolean = false) {
         ensureChannels(context)
+        val localized = LocaleHelper.wrap(context)
+        val accent = ScreenMixAccent.fromStorage(ScreenshotPreferences(context).accentId)
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
         val thumbnail = loadThumbnail(context, uri)
         val openPrompt = PendingIntent.getActivity(
@@ -71,20 +78,22 @@ object ScreenshotNotifier {
 
         val builder = NotificationCompat.Builder(context, CHANNEL_PROMPT)
             .setSmallIcon(R.drawable.ic_notification)
-            .setContentTitle(context.getString(R.string.screenshot_detected_title))
-            .setContentText(context.getString(R.string.notification_prompt_text))
+            .setContentTitle(localized.getString(R.string.screenshot_detected_title))
+            .setContentText(localized.getString(R.string.notification_prompt_text))
+            .setColor(accent.notificationArgb)
+            .setSubText(localized.getString(R.string.app_name))
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setAutoCancel(true)
             .setContentIntent(openPrompt)
             .addAction(
                 0,
-                context.getString(R.string.action_copy_delete),
+                localized.getString(R.string.action_copy_delete),
                 actionPendingIntent(context, uri, ScreenshotActionReceiver.ACTION_COPY_DELETE),
             )
             .addAction(
                 0,
-                context.getString(R.string.action_copy_save),
+                localized.getString(R.string.action_copy_save),
                 actionPendingIntent(context, uri, ScreenshotActionReceiver.ACTION_COPY_SAVE),
             )
             .setDeleteIntent(dismiss)
