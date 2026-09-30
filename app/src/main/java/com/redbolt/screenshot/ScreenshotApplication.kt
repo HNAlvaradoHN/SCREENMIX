@@ -1,8 +1,8 @@
-package com.redbolt.screenshot
+package com.screenmix.app
 
 import android.app.Application
-import com.redbolt.screenshot.handler.ScreenshotPreferences
-import com.redbolt.screenshot.service.ScreenshotMonitorService
+import com.screenmix.app.handler.ScreenshotPreferences
+import com.screenmix.app.service.ScreenshotMonitorService
 
 class ScreenshotApplication : Application() {
     lateinit var preferences: ScreenshotPreferences
