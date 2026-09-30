@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.ui
+package com.screenmix.app.ui
 
 import android.content.Context
 import androidx.compose.runtime.Composable
