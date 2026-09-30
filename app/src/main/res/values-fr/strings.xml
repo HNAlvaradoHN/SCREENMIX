@@ -7,8 +7,8 @@
     <string name="monitor_needs_access">Accès aux photos requis</string>
     <string name="keep_monitor_title">GARDER LE MONITEUR ACTIF</string>
     <string name="keep_monitor_subtitle">Continuer la surveillance après avoir retiré ScreenMix des applications récentes</string>
-    <string name="popup_prompt_title">MENU FLOTTANT</string>
-    <string name="popup_prompt_subtitle">Afficher les actions juste après chaque capture</string>
+    <string name="popup_prompt_title">BOUTON FLOTTANT</string>
+    <string name="popup_prompt_subtitle">Afficher un petit bouton ScreenMix après chaque capture</string>
     <string name="language_title">LANGUE</string>
     <string name="language_subtitle">Choisissez la langue utilisée par ScreenMix</string>
     <string name="language_system">Système</string>
@@ -50,7 +50,7 @@
     <string name="tap_outside_title">TOUCHER À L’EXTÉRIEUR POUR FERMER</string>
     <string name="tap_outside_subtitle">Fermez le menu en touchant la zone autour</string>
     <string name="detection_delay_title">DÉLAI DE DÉTECTION</string>
-    <string name="detection_delay_subtitle">Délai supplémentaire après que ScreenMix a confirmé que la capture est stable</string>
+    <string name="detection_delay_subtitle">Délai avant l’affichage du bouton flottant</string>
     <string name="detection_delay_value">%1$d ms</string>
     <string name="test_prompt">TESTER LE MENU</string>
     <string name="test_prompt_subtitle">Prévisualisez la position sans prendre de capture</string>
@@ -71,4 +71,6 @@
     <string name="battery_dialog_continue">CONTINUER</string>
     <string name="battery_dialog_cancel">ANNULER</string>
     <string name="open_battery_settings">OUVRIR LES RÉGLAGES BATTERIE</string>
+    <string name="open_capture_actions">Ouvrir les actions de capture</string>
+    <string name="close_capture_button">Fermer le bouton de capture</string>
 </resources>
