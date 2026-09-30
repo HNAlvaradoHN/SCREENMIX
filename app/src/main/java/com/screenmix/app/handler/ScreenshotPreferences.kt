@@ -60,11 +60,6 @@ class ScreenshotPreferences(context: Context) {
         prefs.edit().putStringSet(KEY_SAVED_URIS, saved).apply()
     }
 
-    var pendingShareDeleteUri: String?
-        get() = prefs.getString(KEY_PENDING_SHARE_DELETE_URI, null)
-        set(value) = prefs.edit().apply {
-            if (value == null) remove(KEY_PENDING_SHARE_DELETE_URI) else putString(KEY_PENDING_SHARE_DELETE_URI, value)
-        }.apply()
 
     fun isSaved(uriKey: String): Boolean {
         return prefs.getStringSet(KEY_SAVED_URIS, emptySet()).orEmpty().contains(uriKey)
@@ -84,7 +79,6 @@ class ScreenshotPreferences(context: Context) {
         private const val KEY_DISMISS_SYSTEM_PREVIEW = "dismiss_system_preview"
         private const val KEY_SYSTEM_PREVIEW_DISMISS_DELAY_MS = "system_preview_dismiss_delay_ms"
         private const val KEY_SAVED_URIS = "saved_uris"
-        private const val KEY_PENDING_SHARE_DELETE_URI = "pending_share_delete_uri"
         const val DEFAULT_DETECTION_DELAY_MS = 300L
         const val DEFAULT_SYSTEM_PREVIEW_DISMISS_DELAY_MS = 2_000L
     }
