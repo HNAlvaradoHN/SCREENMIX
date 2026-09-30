@@ -5,8 +5,6 @@ import android.content.IntentSender
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -21,15 +19,12 @@ import com.screenmix.app.ui.prompt.ScreenshotPromptContent
 import com.screenmix.app.ui.theme.BoltScreenshotTheme
 
 class ScreenshotPromptActivity : ComponentActivity() {
-    private val mainHandler = Handler(Looper.getMainLooper())
-
     private val deleteLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
         val uri = pendingUri
         if (result.resultCode == RESULT_OK && uri != null) {
             ScreenshotNotifier.cancelPrompt(this, uri)
-            ScreenshotPreferences(this).pendingShareDeleteUri = null
             val message = intent.getStringExtra(EXTRA_DELETE_SUCCESS_MESSAGE) ?: "Screenshot deleted"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         } else if (uri != null) {
@@ -40,28 +35,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
         }
         finish()
     }
-
-    private val shareLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-    ) {
-        shareChooserActive = false
-        val uri = pendingUri ?: return@registerForActivityResult
-        shareChooserReturned = true
-        if (shareTargetChosen) {
-            onShareInitiated(uri)
-            return@registerForActivityResult
-        }
-        scheduleChooserDismissCheck()
-    }
-
-    private var pendingUri: Uri? = null
-    private var shareOnlyMode = false
-    private var deleteAfterShare = true
-    private var shareTargetChosen = false
-    private var shareHandled = false
-    private var shareChooserReturned = false
-    private var shareChooserActive = false
-    private var chooserDismissCheck: Runnable? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,10 +58,8 @@ class ScreenshotPromptActivity : ComponentActivity() {
         pendingUri = uri
 
         val deleteOnly = intent.getBooleanExtra(EXTRA_DELETE_ONLY, false)
-        shareOnlyMode = intent.hasExtra(EXTRA_SHARE_FLOW)
-        if (shareOnlyMode) {
-            deleteAfterShare = intent.getBooleanExtra(EXTRA_SHARE_FLOW, true)
-        }
+        val shareOnlyMode = intent.hasExtra(EXTRA_SHARE_FLOW)
+        val deleteAfterShare = intent.getBooleanExtra(EXTRA_SHARE_FLOW, true)
         val deleteSender = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(EXTRA_DELETE_INTENT, IntentSender::class.java)
         } else {
@@ -129,16 +100,15 @@ class ScreenshotPromptActivity : ComponentActivity() {
                     onShareAndSave = {
                         launchShareChooser(uri, deleteAfterShare = false)
                     },
-                    onDismiss = { finish() },
+                    onDismiss = {
+                        ScreenshotActions.dismissScreenshot(this, uri)
+                        finish()
+                    },
                 )
             }
         }
     }
 
-    override fun onDestroy() {
-        chooserDismissCheck?.let(mainHandler::removeCallbacks)
-        super.onDestroy()
-    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -147,11 +117,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
     }
 
     private fun launchShareChooser(uri: Uri, deleteAfterShare: Boolean) {
-        this.deleteAfterShare = deleteAfterShare
-        shareTargetChosen = false
-        shareChooserReturned = false
-        shareHandled = false
-
         val shareUri = if (deleteAfterShare) {
             ScreenshotActions.createTemporarySnapshot(this, uri)
         } else {
@@ -163,38 +128,22 @@ class ScreenshotPromptActivity : ComponentActivity() {
             return
         }
 
-        shareChooserActive = true
-        shareLauncher.launch(
-            ScreenshotActions.buildShareChooserIntent(this, shareUri) {
-                shareTargetChosen = true
-                onShareInitiated(uri)
-            },
+        ScreenshotActions.acknowledgeScreenshot(this, uri)
+        val chooser = ScreenshotActions.buildShareChooserIntent(
+            context = this,
+            shareUri = shareUri,
+            originalUri = uri,
+            deleteAfterShare = deleteAfterShare,
         )
-    }
 
-    private fun onShareInitiated(uri: Uri) {
-        if (shareHandled) return
-        shareHandled = true
-        chooserDismissCheck?.let(mainHandler::removeCallbacks)
-        ScreenshotActions.onShareCompleted(applicationContext, uri, deleteAfterShare)
-        finish()
-    }
-
-    private fun scheduleChooserDismissCheck() {
-        chooserDismissCheck?.let(mainHandler::removeCallbacks)
-        chooserDismissCheck = Runnable {
-            if (!shareHandled && shareOnlyMode) {
-                ScreenshotActions.cancelScheduledShareDelete()
-                ScreenshotPreferences(this).pendingShareDeleteUri = null
-                finish()
+        runCatching { startActivity(chooser) }
+            .onSuccess { finish() }
+            .onFailure {
+                Toast.makeText(this, "Could not open share menu", Toast.LENGTH_SHORT).show()
             }
-        }
-        mainHandler.postDelayed(chooserDismissCheck!!, CHOOSER_DISMISS_CHECK_MS)
     }
 
     companion object {
-        private const val CHOOSER_DISMISS_CHECK_MS = 1_000L
-
         const val EXTRA_URI = "extra_uri"
         const val EXTRA_DELETE_ONLY = "extra_delete_only"
         const val EXTRA_DELETE_INTENT = "extra_delete_intent"
