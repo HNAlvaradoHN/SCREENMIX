@@ -66,7 +66,7 @@
 
     <string name="keep_monitor_status_ready">La surveillance persistante est prête. ScreenMix attend les changements du système et n’agit que lorsqu’une capture est détectée.</string>
     <string name="keep_monitor_status_limited">Android peut arrêter ScreenMix tant que l’accès batterie sans restriction n’est pas autorisé.</string>
-    <string name="battery_dialog_title">Garder ScreenMix actif ?</string>
+    <string name="battery_dialog_title">Garder ScreenMix actif</string>
     <string name="battery_dialog_message">Permet à ScreenMix de rester disponible même après la fermeture de l’application ou le redémarrage du téléphone. ScreenMix reste au repos et n’agit que lorsqu’une capture d’écran est détectée. Ensuite, il retourne en attente et ne travaille pas constamment en arrière-plan.</string>
     <string name="battery_dialog_continue">CONTINUER</string>
     <string name="battery_dialog_cancel">ANNULER</string>
