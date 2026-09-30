@@ -28,7 +28,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
             val message = intent.getStringExtra(EXTRA_DELETE_SUCCESS_MESSAGE) ?: "Screenshot deleted"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         } else if (uri != null) {
-            ScreenshotPreferences(this).pendingShareDeleteUri = null
             val message = intent.getStringExtra(EXTRA_DELETE_CANCEL_MESSAGE)
                 ?: "Delete cancelled — screenshot copied to clipboard"
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
