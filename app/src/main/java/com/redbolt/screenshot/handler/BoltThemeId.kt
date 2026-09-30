@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.handler
+package com.screenmix.app.handler
 
 enum class BoltThemeId(val storageValue: String, val displayName: String) {
     BOLT_RED("bolt_red", "BOLT RED"),
