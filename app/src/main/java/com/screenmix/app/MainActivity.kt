@@ -174,7 +174,7 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(16.dp))
                     SettingRow(
                         title = "POP-UP PROMPT",
-                        subtitle = "Show chooser right after each screenshot",
+                        subtitle = "Show actions right after each screenshot",
                         checked = instantPrompt,
                         onCheckedChange = {
                             instantPrompt = it
