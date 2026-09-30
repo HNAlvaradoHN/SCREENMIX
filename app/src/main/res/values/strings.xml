@@ -55,7 +55,7 @@
     <string name="tap_outside_title">TAP OUTSIDE TO DISMISS</string>
     <string name="tap_outside_subtitle">Dismiss by tapping the area around the prompt</string>
     <string name="detection_delay_title">DETECTION DELAY</string>
-    <string name="detection_delay_subtitle">Increase if ScreenMix appears before your screenshot finishes saving</string>
+    <string name="detection_delay_subtitle">Extra delay after ScreenMix confirms that the screenshot is stable</string>
     <string name="detection_delay_value">%1$d ms</string>
     <string name="test_prompt">TEST PROMPT</string>
     <string name="test_prompt_subtitle">Preview placement without taking a screenshot</string>
@@ -73,7 +73,7 @@
     <string name="keep_monitor_status_ready">Persistent monitoring is ready. ScreenMix waits for media changes and only acts when a screenshot is detected.</string>
     <string name="keep_monitor_status_limited">Android may stop ScreenMix until unrestricted battery access is allowed.</string>
     <string name="battery_dialog_title">Keep ScreenMix active?</string>
-    <string name="battery_dialog_message">ScreenMix does not continuously scan or poll. It waits for system media changes, performs work when a screenshot is detected, then returns to waiting. Allowing unrestricted battery access helps it keep monitoring after Recents is cleared or the phone restarts. This can use some additional battery because Android will apply fewer background limits.</string>
+    <string name="battery_dialog_message">Keep ScreenMix available even after you close the app or restart your phone. ScreenMix stays idle and only acts when it detects a screenshot. After that, it returns to waiting, so it is not constantly working in the background.</string>
     <string name="battery_dialog_continue">CONTINUE</string>
     <string name="battery_dialog_cancel">CANCEL</string>
     <string name="open_battery_settings">OPEN BATTERY SETTINGS</string>
