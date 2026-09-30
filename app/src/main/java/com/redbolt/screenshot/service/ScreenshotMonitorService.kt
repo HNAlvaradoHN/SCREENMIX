@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.service
+package com.screenmix.app.service
 
 import android.app.Service
 import android.content.Context
@@ -7,11 +7,11 @@ import android.net.Uri
 import android.os.IBinder
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
-import com.redbolt.screenshot.accessibility.SystemPreviewDismissAccessibilityService
-import com.redbolt.screenshot.detector.ScreenshotDetector
-import com.redbolt.screenshot.handler.ScreenshotNotifier
-import com.redbolt.screenshot.handler.ScreenshotPreferences
-import com.redbolt.screenshot.handler.ScreenshotPromptLauncher
+import com.screenmix.app.accessibility.SystemPreviewDismissAccessibilityService
+import com.screenmix.app.detector.ScreenshotDetector
+import com.screenmix.app.handler.ScreenshotNotifier
+import com.screenmix.app.handler.ScreenshotPreferences
+import com.screenmix.app.handler.ScreenshotPromptLauncher
 
 class ScreenshotMonitorService : LifecycleService() {
     private var detector: ScreenshotDetector? = null
