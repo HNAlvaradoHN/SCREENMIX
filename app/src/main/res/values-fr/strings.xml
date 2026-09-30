@@ -11,6 +11,7 @@
     <string name="popup_prompt_subtitle">Afficher les actions juste après chaque capture</string>
     <string name="language_title">LANGUE</string>
     <string name="language_subtitle">Choisissez la langue utilisée par ScreenMix</string>
+    <string name="language_system">Système</string>
     <string name="accent_title">COULEUR D’ACCENT</string>
     <string name="accent_subtitle">Choisissez une couleur pour ScreenMix, le menu et les notifications</string>
     <string name="monitor_notification_title">ScreenMix est actif</string>
