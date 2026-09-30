@@ -1,6 +1,5 @@
 package com.screenmix.app.ui.prompt
 
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -27,12 +26,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.screenmix.app.handler.PromptAction
+import com.screenmix.app.R
 import com.screenmix.app.handler.PromptPosition
 import com.screenmix.app.ui.rememberOverlaySystemBarInsets
 import com.screenmix.app.ui.theme.BoltTheme
@@ -40,12 +38,8 @@ import com.screenmix.app.ui.theme.DotoFont
 
 @Composable
 fun ScreenshotPromptContent(
-    uri: Uri,
-    copyRowOnTop: Boolean,
     onCopyDelete: () -> Unit,
     onCopySave: () -> Unit,
-    onShareAndDelete: () -> Unit,
-    onShareAndSave: () -> Unit,
     onDismiss: () -> Unit,
     overlayMode: Boolean = false,
     position: PromptPosition = PromptPosition.CENTER,
@@ -65,14 +59,6 @@ fun ScreenshotPromptContent(
         PromptPosition.CENTER -> RoundedCornerShape(24.dp)
         PromptPosition.BOTTOM -> RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
     }
-    val handlers = mapOf(
-        PromptAction.COPY_DELETE to onCopyDelete,
-        PromptAction.COPY_SAVE to onCopySave,
-        PromptAction.SHARE_DELETE to onShareAndDelete,
-        PromptAction.SHARE_SAVE to onShareAndSave,
-    )
-    val topRow = if (copyRowOnTop) PromptAction.COPY_ROW else PromptAction.SHARE_ROW
-    val bottomRow = if (copyRowOnTop) PromptAction.SHARE_ROW else PromptAction.COPY_ROW
 
     Box(
         modifier = Modifier
@@ -137,9 +123,21 @@ fun ScreenshotPromptContent(
                     fontSize = 16.sp,
                 )
                 Spacer(modifier = Modifier.height(if (overlayMode) 14.dp else 20.dp))
-                ActionPairRow(actions = topRow, handlers = handlers)
-                Spacer(modifier = Modifier.height(10.dp))
-                ActionPairRow(actions = bottomRow, handlers = handlers)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    PromptButton(
+                        label = stringResource(R.string.action_copy_delete),
+                        onClick = onCopyDelete,
+                        modifier = Modifier.weight(1f),
+                    )
+                    PromptButton(
+                        label = stringResource(R.string.action_copy_save),
+                        onClick = onCopySave,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
                 if (!overlayMode) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -158,26 +156,7 @@ fun ScreenshotPromptContent(
 }
 
 @Composable
-private fun ActionPairRow(
-    actions: List<PromptAction>,
-    handlers: Map<PromptAction, () -> Unit>,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
-        actions.forEach { action ->
-            GridPromptButton(
-                label = stringResource(action.labelRes),
-                onClick = handlers.getValue(action),
-                modifier = Modifier.weight(1f),
-            )
-        }
-    }
-}
-
-@Composable
-private fun GridPromptButton(
+private fun PromptButton(
     label: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
