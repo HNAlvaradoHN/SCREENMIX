@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.detector
+package com.screenmix.app.detector
 
 import android.content.Context
 import android.database.ContentObserver
@@ -6,8 +6,8 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
-import com.redbolt.screenshot.handler.ScreenshotActions
-import com.redbolt.screenshot.handler.ScreenshotPreferences
+import com.screenmix.app.handler.ScreenshotActions
+import com.screenmix.app.handler.ScreenshotPreferences
 
 class ScreenshotDetector(
     private val context: Context,
