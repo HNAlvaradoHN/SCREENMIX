@@ -19,6 +19,7 @@
     <string name="screenshot_detected_title">Captura lista</string>
     <string name="action_copy_delete">COPIAR Y ELIMINAR</string>
     <string name="action_copy_save">COPIAR Y GUARDAR</string>
+    <string name="action_close">CERRAR</string>
     <string name="notification_prompt_text">Copia la captura y elige si deseas eliminarla o guardarla</string>
     <string name="all_files_title">ELIMINACIÓN INSTANTÁNEA</string>
     <string name="all_files_subtitle_on">Las acciones de eliminar funcionan sin una segunda confirmación</string>
