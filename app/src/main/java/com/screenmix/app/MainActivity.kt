@@ -66,6 +66,7 @@ class MainActivity : ComponentActivity() {
     private val app by lazy { application as ScreenshotApplication }
 
     private var monitorEnabled by mutableStateOf(true)
+    private var keepMonitorActive by mutableStateOf(false)
     private var instantPrompt by mutableStateOf(true)
     private var promptPosition by mutableStateOf(PromptPosition.CENTER)
     private var vibrateOnPrompt by mutableStateOf(true)
@@ -158,6 +159,17 @@ class MainActivity : ComponentActivity() {
                             }
                             monitorEnabled = enabled
                             app.preferences.isMonitorEnabled = enabled
+                            syncMonitorState()
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    SettingRow(
+                        title = "KEEP MONITOR ACTIVE",
+                        subtitle = "Keep monitoring after ScreenMix is removed from Recents",
+                        checked = keepMonitorActive,
+                        onCheckedChange = { enabled ->
+                            keepMonitorActive = enabled
+                            app.preferences.keepMonitorActive = enabled
                             syncMonitorState()
                         },
                     )
@@ -524,6 +536,7 @@ class MainActivity : ComponentActivity() {
 
     private fun loadPreferences() {
         monitorEnabled = app.preferences.isMonitorEnabled
+        keepMonitorActive = app.preferences.keepMonitorActive
         instantPrompt = app.preferences.showInstantPrompt
         promptPosition = app.preferences.promptPosition
         vibrateOnPrompt = app.preferences.vibrateOnPrompt
