@@ -11,6 +11,7 @@
     <string name="popup_prompt_subtitle">Aktionen direkt nach jedem Screenshot anzeigen</string>
     <string name="language_title">SPRACHE</string>
     <string name="language_subtitle">Wähle die Sprache für ScreenMix</string>
+    <string name="language_system">System</string>
     <string name="accent_title">AKZENTFARBE</string>
     <string name="accent_subtitle">Wähle eine Farbe für ScreenMix, das Menü und Benachrichtigungen</string>
     <string name="monitor_notification_title">ScreenMix ist aktiv</string>
