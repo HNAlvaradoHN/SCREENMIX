@@ -1,4 +1,4 @@
-package com.redbolt.screenshot
+package com.screenmix.app
 
 import android.content.Intent
 import android.content.IntentSender
@@ -14,11 +14,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import com.redbolt.screenshot.handler.ScreenshotActions
-import com.redbolt.screenshot.handler.ScreenshotNotifier
-import com.redbolt.screenshot.handler.ScreenshotPreferences
-import com.redbolt.screenshot.ui.prompt.ScreenshotPromptContent
-import com.redbolt.screenshot.ui.theme.BoltScreenshotTheme
+import com.screenmix.app.handler.ScreenshotActions
+import com.screenmix.app.handler.ScreenshotNotifier
+import com.screenmix.app.handler.ScreenshotPreferences
+import com.screenmix.app.ui.prompt.ScreenshotPromptContent
+import com.screenmix.app.ui.theme.BoltScreenshotTheme
 
 class ScreenshotPromptActivity : ComponentActivity() {
     private val mainHandler = Handler(Looper.getMainLooper())
