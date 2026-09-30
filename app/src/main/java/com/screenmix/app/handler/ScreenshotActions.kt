@@ -155,7 +155,6 @@ object ScreenshotActions {
             return
         }
 
-        acknowledgeScreenshot(context, uri)
         if (deleteScreenshotSilently(context, uri)) {
             Toast.makeText(context, "Copied and deleted", Toast.LENGTH_SHORT).show()
             return
