@@ -1,4 +1,4 @@
-package com.redbolt.screenshot.ui.theme
+package com.screenmix.app.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -12,9 +12,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
-import com.redbolt.screenshot.R
-import com.redbolt.screenshot.handler.BoltThemeId
-import com.redbolt.screenshot.handler.ScreenshotPreferences
+import com.screenmix.app.R
+import com.screenmix.app.handler.BoltThemeId
+import com.screenmix.app.handler.ScreenshotPreferences
 
 /** Doto Rounded SemiBold — Google Fonts instance (ROND 100, wght 600). */
 @OptIn(ExperimentalTextApi::class)
