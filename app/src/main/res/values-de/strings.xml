@@ -63,4 +63,12 @@
     <string name="screenshot_deleted">Screenshot gelöscht</string>
     <string name="could_not_delete">Löschen nicht möglich — aktiviere Sofort löschen in ScreenMix</string>
     <string name="prompt_title">Screenshot bereit</string>
+
+    <string name="keep_monitor_status_ready">Die dauerhafte Überwachung ist bereit. ScreenMix wartet auf Systemänderungen und reagiert nur, wenn ein Screenshot erkannt wird.</string>
+    <string name="keep_monitor_status_limited">Android kann ScreenMix stoppen, solange uneingeschränkte Akkunutzung nicht erlaubt ist.</string>
+    <string name="battery_dialog_title">ScreenMix aktiv halten?</string>
+    <string name="battery_dialog_message">ScreenMix scannt oder prüft nicht ständig. Es wartet auf Medienänderungen des Systems, arbeitet bei einem erkannten Screenshot und wartet danach wieder. Uneingeschränkte Akkunutzung hilft, die Überwachung nach dem Entfernen aus „Letzte Apps“ oder nach einem Neustart beizubehalten. Dies kann etwas mehr Akku verbrauchen, weil Android weniger Hintergrundbeschränkungen anwendet.</string>
+    <string name="battery_dialog_continue">WEITER</string>
+    <string name="battery_dialog_cancel">ABBRECHEN</string>
+    <string name="open_battery_settings">AKKUEINSTELLUNGEN ÖFFNEN</string>
 </resources>
