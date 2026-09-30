@@ -32,12 +32,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.screenmix.app.accessibility.SystemPreviewDismissAccessibilityService
 import com.screenmix.app.handler.AppLanguage
+import com.screenmix.app.handler.BatteryOptimizationHelper
 import com.screenmix.app.handler.LocaleHelper
 import com.screenmix.app.handler.PromptPosition
 import com.screenmix.app.handler.ScreenshotActions
@@ -72,6 +75,8 @@ class MainActivity : ComponentActivity() {
 
     private var monitorEnabled by mutableStateOf(true)
     private var keepMonitorActive by mutableStateOf(false)
+    private var batteryUnrestricted by mutableStateOf(false)
+    private var showBatteryInfoDialog by mutableStateOf(false)
     private var instantPrompt by mutableStateOf(true)
     private var promptPosition by mutableStateOf(PromptPosition.CENTER)
     private var vibrateOnPrompt by mutableStateOf(true)
@@ -107,6 +112,7 @@ class MainActivity : ComponentActivity() {
         hasOverlayPermission = Settings.canDrawOverlays(this)
         hasAllFilesAccess = ScreenshotActions.hasAllFilesAccess(this)
         hasAccessibilityDismiss = SystemPreviewDismissAccessibilityService.isEnabled(this)
+        batteryUnrestricted = BatteryOptimizationHelper.isUnrestricted(this)
         enableEdgeToEdge()
 
         if (!hasMediaPermission || !hasNotificationPermission) {
@@ -168,14 +174,32 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(16.dp))
                     SettingRow(
                         title = getString(R.string.keep_monitor_title),
-                        subtitle = getString(R.string.keep_monitor_subtitle),
+                        subtitle = when {
+                            !keepMonitorActive -> getString(R.string.keep_monitor_subtitle)
+                            batteryUnrestricted -> getString(R.string.keep_monitor_status_ready)
+                            else -> getString(R.string.keep_monitor_status_limited)
+                        },
                         checked = keepMonitorActive,
                         onCheckedChange = { enabled ->
-                            keepMonitorActive = enabled
-                            app.preferences.keepMonitorActive = enabled
-                            syncMonitorState()
+                            if (enabled) {
+                                showBatteryInfoDialog = true
+                            } else {
+                                keepMonitorActive = false
+                                app.preferences.keepMonitorActive = false
+                                syncMonitorState()
+                            }
                         },
                     )
+                    if (keepMonitorActive && !batteryUnrestricted) {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        SettingsButton(
+                            label = getString(R.string.open_battery_settings),
+                            primary = false,
+                            onClick = {
+                                BatteryOptimizationHelper.requestUnrestricted(this@MainActivity)
+                            },
+                        )
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     SettingRow(
                         title = getString(R.string.popup_prompt_title),
@@ -522,6 +546,55 @@ class MainActivity : ComponentActivity() {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
+
+                if (showBatteryInfoDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showBatteryInfoDialog = false },
+                        title = {
+                            Text(
+                                text = getString(R.string.battery_dialog_title),
+                                fontFamily = ScreenMixDisplayFont,
+                                color = colors.textPrimary,
+                            )
+                        },
+                        text = {
+                            Text(
+                                text = getString(R.string.battery_dialog_message),
+                                fontFamily = ScreenMixBodyFont,
+                                color = colors.textMuted,
+                            )
+                        },
+                        confirmButton = {
+                            TextButton(
+                                onClick = {
+                                    showBatteryInfoDialog = false
+                                    keepMonitorActive = true
+                                    app.preferences.keepMonitorActive = true
+                                    syncMonitorState()
+                                    batteryUnrestricted =
+                                        BatteryOptimizationHelper.isUnrestricted(this@MainActivity)
+                                    if (!batteryUnrestricted) {
+                                        BatteryOptimizationHelper.requestUnrestricted(this@MainActivity)
+                                    }
+                                },
+                            ) {
+                                Text(
+                                    text = getString(R.string.battery_dialog_continue),
+                                    color = colors.accent,
+                                )
+                            }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showBatteryInfoDialog = false }) {
+                                Text(
+                                    text = getString(R.string.battery_dialog_cancel),
+                                    color = colors.textMuted,
+                                )
+                            }
+                        },
+                        containerColor = colors.surface,
+                    )
+                }
             }
         }
     }
@@ -533,6 +606,7 @@ class MainActivity : ComponentActivity() {
         hasOverlayPermission = Settings.canDrawOverlays(this)
         hasAllFilesAccess = ScreenshotActions.hasAllFilesAccess(this)
         hasAccessibilityDismiss = SystemPreviewDismissAccessibilityService.isEnabled(this)
+        batteryUnrestricted = BatteryOptimizationHelper.isUnrestricted(this)
         if (monitorEnabled && hasMediaPermission) {
             ScreenshotMonitorService.start(this)
         }
