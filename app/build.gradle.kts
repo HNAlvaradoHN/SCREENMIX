@@ -6,35 +6,22 @@ plugins {
 import java.net.URI
 
 android {
-  namespace = "com.redbolt.screenshot"
+  namespace = "com.screenmix.app"
   compileSdk { version = release(36) { minorApiLevel = 1 } }
 
   defaultConfig {
-    applicationId = "com.redbolt.screenshot"
+    applicationId = "com.screenmix.app"
     minSdk = 26
     targetSdk = 36
-    versionCode = 25
-    versionName = "1.5.0"
+    versionCode = 1
+    versionName = "0.1.0"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-  }
-
-  signingConfigs {
-    create("debugConfig") {
-      storeFile = file("${rootDir}/debug.keystore")
-      storePassword = "android"
-      keyAlias = "androiddebugkey"
-      keyPassword = "android"
-    }
   }
 
   buildTypes {
     release {
       isMinifyEnabled = false
-      signingConfig = signingConfigs.getByName("debugConfig")
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-    debug {
-      signingConfig = signingConfigs.getByName("debugConfig")
     }
   }
 
@@ -84,7 +71,7 @@ tasks.register("downloadRobotoMonoFont") {
   doLast {
     val destFile = file("src/main/res/font/roboto_mono.ttf")
     if (destFile.exists() && destFile.length() >= 1024) return@doLast
-    val fallback = rootProject.file("../bolt-signin/app/src/main/res/font/roboto_mono.ttf")
+    val fallback = rootProject.file("../screenmix-assets/app/src/main/res/font/roboto_mono.ttf")
     if (fallback.exists() && fallback.length() >= 1024) {
       destFile.parentFile.mkdirs()
       fallback.copyTo(destFile, overwrite = true)
