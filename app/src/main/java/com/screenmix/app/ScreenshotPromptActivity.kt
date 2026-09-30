@@ -19,6 +19,8 @@ import com.screenmix.app.ui.prompt.ScreenshotPromptContent
 import com.screenmix.app.ui.theme.BoltScreenshotTheme
 
 class ScreenshotPromptActivity : ComponentActivity() {
+    private var pendingUri: Uri? = null
+
     private val deleteLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult(),
     ) { result ->
