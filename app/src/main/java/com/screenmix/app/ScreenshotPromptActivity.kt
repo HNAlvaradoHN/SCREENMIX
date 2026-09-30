@@ -37,7 +37,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
         finish()
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -49,30 +48,35 @@ class ScreenshotPromptActivity : ComponentActivity() {
                 WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON,
         )
         enableEdgeToEdge()
+        handleIntent(intent)
+    }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
+    private fun handleIntent(intent: Intent) {
         val uriString = intent.getStringExtra(EXTRA_URI)
         if (uriString == null) {
             finish()
             return
         }
+
         val uri = Uri.parse(uriString)
         pendingUri = uri
 
         val deleteOnly = intent.getBooleanExtra(EXTRA_DELETE_ONLY, false)
-        val shareOnlyMode = intent.hasExtra(EXTRA_SHARE_FLOW)
-        val deleteAfterShare = intent.getBooleanExtra(EXTRA_SHARE_FLOW, true)
         val deleteSender = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra(EXTRA_DELETE_INTENT, IntentSender::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra(EXTRA_DELETE_INTENT)
         }
+
         if (deleteOnly && deleteSender != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             deleteLauncher.launch(IntentSenderRequest.Builder(deleteSender).build())
-            return
-        }
-        if (shareOnlyMode) {
-            launchShareChooser(uri, deleteAfterShare)
             return
         }
 
@@ -80,8 +84,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
             val prefs = ScreenshotPreferences(this)
             BoltScreenshotTheme(themeId = prefs.themeId) {
                 ScreenshotPromptContent(
-                    uri = uri,
-                    copyRowOnTop = prefs.copyRowOnTop,
                     tapOutsideToDismiss = prefs.tapOutsideToDismiss,
                     onCopyDelete = {
                         ScreenshotActions.copyAndDelete(this, uri)
@@ -95,12 +97,6 @@ class ScreenshotPromptActivity : ComponentActivity() {
                         ScreenshotActions.copyAndSave(this, uri)
                         finish()
                     },
-                    onShareAndDelete = {
-                        launchShareChooser(uri, deleteAfterShare = true)
-                    },
-                    onShareAndSave = {
-                        launchShareChooser(uri, deleteAfterShare = false)
-                    },
                     onDismiss = {
                         ScreenshotActions.dismissScreenshot(this, uri)
                         finish()
@@ -110,47 +106,11 @@ class ScreenshotPromptActivity : ComponentActivity() {
         }
     }
 
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        setIntent(intent)
-        recreate()
-    }
-
-    private fun launchShareChooser(uri: Uri, deleteAfterShare: Boolean) {
-        val shareUri = if (deleteAfterShare) {
-            ScreenshotActions.createTemporarySnapshot(this, uri)
-        } else {
-            uri
-        }
-
-        if (shareUri == null) {
-            Toast.makeText(this, "Could not prepare screenshot for sharing", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        ScreenshotActions.acknowledgeScreenshot(this, uri)
-        val chooser = ScreenshotActions.buildShareChooserIntent(
-            context = this,
-            shareUri = shareUri,
-            originalUri = uri,
-            deleteAfterShare = deleteAfterShare,
-        )
-
-        runCatching { startActivity(chooser) }
-            .onSuccess { finish() }
-            .onFailure {
-                Toast.makeText(this, "Could not open share menu", Toast.LENGTH_SHORT).show()
-            }
-    }
-
     companion object {
         const val EXTRA_URI = "extra_uri"
         const val EXTRA_DELETE_ONLY = "extra_delete_only"
         const val EXTRA_DELETE_INTENT = "extra_delete_intent"
         const val EXTRA_DELETE_CANCEL_MESSAGE = "extra_delete_cancel_message"
         const val EXTRA_DELETE_SUCCESS_MESSAGE = "extra_delete_success_message"
-        const val EXTRA_SHARE_FLOW = "extra_share_flow"
-        const val EXTRA_SHARE_AND_DELETE = "extra_share_and_delete"
     }
 }
