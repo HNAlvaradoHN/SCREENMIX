@@ -19,7 +19,7 @@ captures/
 .DS_Store
 Thumbs.db
 
-# Signing — never commit release keys (debug.keystore uses public Android debug defaults)
+# Signing — never commit release keys (debug keys and release keys stay local)
 release.keystore
 *.jks
 keystore.properties
@@ -30,5 +30,5 @@ app/src/main/res/font/doto_rounded_semibold.ttf
 app/src/main/res/font/roboto_mono.ttf
 
 # Local / generated docs
-BoltShot-README.docx
-BoltShot-*.apk
+ScreenMix-README.docx
+ScreenMix-*.apk
