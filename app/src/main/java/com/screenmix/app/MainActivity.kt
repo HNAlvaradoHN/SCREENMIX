@@ -1,6 +1,7 @@
 package com.screenmix.app
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -48,20 +49,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.screenmix.app.accessibility.SystemPreviewDismissAccessibilityService
-import com.screenmix.app.handler.BoltThemeId
+import com.screenmix.app.handler.AppLanguage
+import com.screenmix.app.handler.LocaleHelper
 import com.screenmix.app.handler.PromptPosition
 import com.screenmix.app.handler.ScreenshotActions
 import com.screenmix.app.handler.ScreenshotPreferences
 import com.screenmix.app.handler.ScreenshotPromptLauncher
 import com.screenmix.app.service.ScreenshotMonitorService
-import com.screenmix.app.ui.theme.BoltScreenshotTheme
-import com.screenmix.app.ui.theme.BoltTheme
-import com.screenmix.app.ui.theme.BoltThemePresets
-import com.screenmix.app.ui.theme.BodyFont
-import com.screenmix.app.ui.theme.DotoFont
+import com.screenmix.app.ui.theme.ScreenMixAccent
+import com.screenmix.app.ui.theme.ScreenMixScreenMixBodyFont
+import com.screenmix.app.ui.theme.ScreenMixDisplayFont
+import com.screenmix.app.ui.theme.ScreenMixTheme
+import com.screenmix.app.ui.theme.ScreenMixThemeColors
 import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(LocaleHelper.wrap(newBase))
+    }
+
     private val app by lazy { application as ScreenshotApplication }
 
     private var monitorEnabled by mutableStateOf(true)
@@ -73,7 +79,8 @@ class MainActivity : ComponentActivity() {
     private var detectionDelayMs by mutableFloatStateOf(
         ScreenshotPreferences.DEFAULT_DETECTION_DELAY_MS.toFloat(),
     )
-    private var selectedTheme by mutableStateOf(BoltThemeId.BOLT_RED)
+    private var selectedLanguage by mutableStateOf(AppLanguage.SYSTEM)
+    private var selectedAccent by mutableStateOf(ScreenMixAccent.OCEAN)
     private var dismissSystemPreview by mutableStateOf(false)
     private var systemPreviewDismissDelayMs by mutableFloatStateOf(
         ScreenshotPreferences.DEFAULT_SYSTEM_PREVIEW_DISMISS_DELAY_MS.toFloat(),
@@ -113,8 +120,8 @@ class MainActivity : ComponentActivity() {
         }.getOrDefault("1.0.0")
 
         setContent {
-            BoltScreenshotTheme(themeId = selectedTheme) {
-                val colors = BoltTheme.colors
+            ScreenMixTheme(accent = selectedAccent) {
+                val colors = ScreenMixThemeColors.current
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -126,29 +133,27 @@ class MainActivity : ComponentActivity() {
                     verticalArrangement = Arrangement.Top,
                 ) {
                     Text(
-                        text = "SCREEN",
-                        fontFamily = DotoFont,
-                        color = colors.accent,
-                        fontSize = 18.sp,
-                    )
-                    Text(
-                        text = "MIX",
-                        fontFamily = DotoFont,
+                        text = getString(R.string.app_name),
+                        fontFamily = ScreenMixDisplayFont,
                         color = colors.textPrimary,
-                        fontSize = 18.sp,
+                        fontSize = 28.sp,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Copy each screenshot, then choose whether to save or delete it.",
-                        fontFamily = BodyFont,
+                        text = getString(R.string.app_tagline),
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 10.sp,
                     )
                     Spacer(modifier = Modifier.height(32.dp))
 
                     SettingRow(
-                        title = "MONITOR SCREENSHOTS",
-                        subtitle = if (hasMediaPermission) "Running in background" else "Needs photo access",
+                        title = getString(R.string.monitor_screenshots_title),
+                        subtitle = if (hasMediaPermission) {
+                            getString(R.string.monitor_running)
+                        } else {
+                            getString(R.string.monitor_needs_access)
+                        },
                         checked = monitorEnabled && hasMediaPermission,
                         onCheckedChange = { enabled ->
                             if (!hasMediaPermission) {
@@ -162,8 +167,8 @@ class MainActivity : ComponentActivity() {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     SettingRow(
-                        title = "KEEP MONITOR ACTIVE",
-                        subtitle = "Keep monitoring after ScreenMix is removed from Recents",
+                        title = getString(R.string.keep_monitor_title),
+                        subtitle = getString(R.string.keep_monitor_subtitle),
                         checked = keepMonitorActive,
                         onCheckedChange = { enabled ->
                             keepMonitorActive = enabled
@@ -173,8 +178,8 @@ class MainActivity : ComponentActivity() {
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     SettingRow(
-                        title = "POP-UP PROMPT",
-                        subtitle = "Show actions right after each screenshot",
+                        title = getString(R.string.popup_prompt_title),
+                        subtitle = getString(R.string.popup_prompt_subtitle),
                         checked = instantPrompt,
                         onCheckedChange = {
                             instantPrompt = it
@@ -226,46 +231,83 @@ class MainActivity : ComponentActivity() {
 
                     Spacer(modifier = Modifier.height(32.dp))
                     Text(
-                        text = getString(R.string.section_theme),
-                        fontFamily = DotoFont,
+                        text = getString(R.string.section_appearance),
+                        fontFamily = ScreenMixDisplayFont,
                         color = colors.accent,
+                        fontSize = 12.sp,
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = getString(R.string.language_title),
+                        fontFamily = ScreenMixBodyFont,
+                        color = colors.textPrimary,
                         fontSize = 11.sp,
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = getString(R.string.theme_subtitle),
-                        fontFamily = BodyFont,
+                        text = getString(R.string.language_subtitle),
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 9.sp,
                     )
-                    Spacer(modifier = Modifier.height(12.dp))
-                    BoltThemeId.entries.chunked(2).forEach { rowThemes ->
+                    Spacer(modifier = Modifier.height(10.dp))
+                    AppLanguage.entries.chunked(2).forEach { rowLanguages ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            rowThemes.forEach { theme ->
-                                ThemeOptionCard(
-                                    themeId = theme,
-                                    selected = selectedTheme == theme,
+                            rowLanguages.forEach { language ->
+                                LanguageChip(
+                                    label = language.nativeName,
+                                    selected = selectedLanguage == language,
                                     onClick = {
-                                        selectedTheme = theme
-                                        app.preferences.themeId = theme
+                                        selectedLanguage = language
+                                        app.preferences.languageTag = language.tag
+                                        recreate()
                                     },
                                     modifier = Modifier.weight(1f),
                                 )
                             }
-                            if (rowThemes.size == 1) {
+                            if (rowLanguages.size == 1) {
                                 Spacer(modifier = Modifier.weight(1f))
                             }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = getString(R.string.accent_title),
+                        fontFamily = ScreenMixBodyFont,
+                        color = colors.textPrimary,
+                        fontSize = 11.sp,
+                    )
+                    Text(
+                        text = getString(R.string.accent_subtitle),
+                        fontFamily = ScreenMixBodyFont,
+                        color = colors.textMuted,
+                        fontSize = 9.sp,
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        ScreenMixAccent.entries.forEach { accent ->
+                            AccentSwatch(
+                                accent = accent,
+                                selected = selectedAccent == accent,
+                                onClick = {
+                                    selectedAccent = accent
+                                    app.preferences.accentId = accent.storageValue
+                                },
+                            )
+                        }
+                    }
+
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = getString(R.string.section_customization),
-                        fontFamily = DotoFont,
+                        fontFamily = ScreenMixDisplayFont,
                         color = colors.accent,
                         fontSize = 11.sp,
                     )
@@ -298,13 +340,13 @@ class MainActivity : ComponentActivity() {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = getString(R.string.dismiss_preview_delay_title),
-                            fontFamily = BodyFont,
+                            fontFamily = ScreenMixBodyFont,
                             color = colors.textPrimary,
                             fontSize = 11.sp,
                         )
                         Text(
                             text = getString(R.string.dismiss_preview_delay_subtitle),
-                            fontFamily = BodyFont,
+                            fontFamily = ScreenMixBodyFont,
                             color = colors.textMuted,
                             fontSize = 9.sp,
                         )
@@ -313,7 +355,7 @@ class MainActivity : ComponentActivity() {
                                 R.string.detection_delay_value,
                                 systemPreviewDismissDelayMs.roundToInt(),
                             ),
-                            fontFamily = BodyFont,
+                            fontFamily = ScreenMixBodyFont,
                             color = colors.accent,
                             fontSize = 10.sp,
                             modifier = Modifier.padding(top = 6.dp),
@@ -337,13 +379,13 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = getString(R.string.prompt_position_title),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textPrimary,
                         fontSize = 11.sp,
                     )
                     Text(
                         text = getString(R.string.prompt_position_subtitle),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 9.sp,
                     )
@@ -403,13 +445,13 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
                         text = getString(R.string.detection_delay_title),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textPrimary,
                         fontSize = 11.sp,
                     )
                     Text(
                         text = getString(R.string.detection_delay_subtitle),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 9.sp,
                     )
@@ -418,7 +460,7 @@ class MainActivity : ComponentActivity() {
                             R.string.detection_delay_value,
                             detectionDelayMs.roundToInt(),
                         ),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.accent,
                         fontSize = 10.sp,
                         modifier = Modifier.padding(top = 6.dp),
@@ -445,7 +487,7 @@ class MainActivity : ComponentActivity() {
                     )
                     Text(
                         text = getString(R.string.test_prompt_subtitle),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 9.sp,
                         modifier = Modifier.padding(top = 8.dp),
@@ -454,15 +496,15 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = getString(R.string.system_preview_note),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 9.sp,
                     )
                     if (!hasNotificationPermission && !instantPrompt) {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            text = "Enable notifications so the prompt can appear.",
-                            fontFamily = BodyFont,
+                            text = getString(R.string.notification_permission_note),
+                            fontFamily = ScreenMixBodyFont,
                             color = colors.accent,
                             fontSize = 9.sp,
                         )
@@ -470,7 +512,7 @@ class MainActivity : ComponentActivity() {
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
                         text = getString(R.string.version_label, versionName),
-                        fontFamily = BodyFont,
+                        fontFamily = ScreenMixBodyFont,
                         color = colors.textMuted,
                         fontSize = 9.sp,
                     )
@@ -500,7 +542,8 @@ class MainActivity : ComponentActivity() {
         vibrateOnPrompt = app.preferences.vibrateOnPrompt
         tapOutsideToDismiss = app.preferences.tapOutsideToDismiss
         detectionDelayMs = app.preferences.detectionDelayMs.toFloat()
-        selectedTheme = app.preferences.themeId
+        selectedLanguage = AppLanguage.fromTag(app.preferences.languageTag)
+        selectedAccent = ScreenMixAccent.fromStorage(app.preferences.accentId)
         dismissSystemPreview = app.preferences.dismissSystemPreview
         systemPreviewDismissDelayMs = app.preferences.systemPreviewDismissDelayMs.toFloat()
     }
@@ -561,15 +604,15 @@ private fun SettingRow(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
 ) {
-    val colors = BoltTheme.colors
+    val colors = ScreenMixThemeColors.current
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, fontFamily = BodyFont, color = colors.textPrimary, fontSize = 11.sp)
-            Text(text = subtitle, fontFamily = BodyFont, color = colors.textMuted, fontSize = 9.sp)
+            Text(text = title, fontFamily = ScreenMixBodyFont, color = colors.textPrimary, fontSize = 11.sp)
+            Text(text = subtitle, fontFamily = ScreenMixBodyFont, color = colors.textMuted, fontSize = 9.sp)
         }
         Switch(
             checked = checked,
@@ -588,7 +631,7 @@ private fun SettingsButton(
     primary: Boolean,
     onClick: () -> Unit,
 ) {
-    val colors = BoltTheme.colors
+    val colors = ScreenMixThemeColors.current
     Button(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
@@ -597,7 +640,7 @@ private fun SettingsButton(
             contentColor = if (primary) colors.background else colors.textPrimary,
         ),
     ) {
-        Text(label, fontFamily = BodyFont, fontSize = 10.sp)
+        Text(label, fontFamily = ScreenMixBodyFont, fontSize = 10.sp)
     }
 }
 
@@ -608,7 +651,7 @@ private fun PositionChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val colors = BoltTheme.colors
+    val colors = ScreenMixThemeColors.current
     val shape = RoundedCornerShape(10.dp)
     androidx.compose.foundation.layout.Box(
         modifier = modifier
@@ -621,7 +664,7 @@ private fun PositionChip(
     ) {
         Text(
             text = label,
-            fontFamily = BodyFont,
+            fontFamily = ScreenMixBodyFont,
             color = if (selected) colors.background else colors.textMuted,
             fontSize = 10.sp,
         )
@@ -629,57 +672,53 @@ private fun PositionChip(
 }
 
 @androidx.compose.runtime.Composable
-private fun ThemeOptionCard(
-    themeId: BoltThemeId,
+private fun LanguageChip(
+    label: String,
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val theme = BoltThemePresets.fromId(themeId)
+    val colors = ScreenMixThemeColors.current
     val shape = RoundedCornerShape(12.dp)
-    Column(
+    androidx.compose.foundation.layout.Box(
         modifier = modifier
             .clip(shape)
-            .background(if (selected) theme.surface else theme.background)
+            .background(if (selected) colors.surfaceAlt else colors.surface)
             .border(
                 width = if (selected) 2.dp else 1.dp,
-                color = if (selected) theme.accent else theme.border,
+                color = if (selected) colors.accent else colors.border,
                 shape = shape,
             )
             .clickable(onClick = onClick)
-            .padding(12.dp),
+            .padding(vertical = 12.dp, horizontal = 8.dp),
+        contentAlignment = Alignment.Center,
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            androidx.compose.foundation.layout.Box(
-                modifier = Modifier
-                    .size(14.dp)
-                    .clip(CircleShape)
-                    .background(theme.accent),
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = themeId.displayName,
-                fontFamily = BodyFont,
-                color = if (selected) theme.textPrimary else theme.textMuted,
-                fontSize = 9.sp,
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            androidx.compose.foundation.layout.Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp))
-                    .background(theme.accent),
-            )
-            androidx.compose.foundation.layout.Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp))
-                    .background(theme.surface),
-            )
-        }
+        Text(
+            text = label,
+            fontFamily = ScreenMixBodyFont,
+            color = if (selected) colors.textPrimary else colors.textMuted,
+            fontSize = 10.sp,
+        )
     }
+}
+
+@androidx.compose.runtime.Composable
+private fun AccentSwatch(
+    accent: ScreenMixAccent,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    val colors = ScreenMixThemeColors.current
+    androidx.compose.foundation.layout.Box(
+        modifier = Modifier
+            .size(if (selected) 34.dp else 30.dp)
+            .clip(CircleShape)
+            .background(accent.color)
+            .border(
+                width = if (selected) 3.dp else 1.dp,
+                color = if (selected) colors.textPrimary else colors.border,
+                shape = CircleShape,
+            )
+            .clickable(onClick = onClick),
+    )
 }
