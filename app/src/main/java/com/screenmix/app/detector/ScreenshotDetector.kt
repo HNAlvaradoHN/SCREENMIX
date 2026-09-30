@@ -58,7 +58,7 @@ class ScreenshotDetector(
             projection,
             null,
             null,
-            "${MediaStore.Images.Media.DATE_ADDED} DESC",
+            "${MediaStore.Images.Media.DATE_ADDED} DESC, ${MediaStore.Images.Media._ID} DESC",
         )?.use { cursor ->
             if (!cursor.moveToFirst()) return
             val id = cursor.getLong(0)
