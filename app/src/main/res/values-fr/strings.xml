@@ -63,4 +63,12 @@
     <string name="screenshot_deleted">Capture supprimée</string>
     <string name="could_not_delete">Impossible de supprimer — activez Suppression instantanée dans ScreenMix</string>
     <string name="prompt_title">Capture prête</string>
+
+    <string name="keep_monitor_status_ready">La surveillance persistante est prête. ScreenMix attend les changements du système et n’agit que lorsqu’une capture est détectée.</string>
+    <string name="keep_monitor_status_limited">Android peut arrêter ScreenMix tant que l’accès batterie sans restriction n’est pas autorisé.</string>
+    <string name="battery_dialog_title">Garder ScreenMix actif ?</string>
+    <string name="battery_dialog_message">ScreenMix n’analyse pas en continu et n’effectue pas de sondage périodique. Il attend les changements de médias du système, travaille lorsqu’une capture est détectée, puis retourne en attente. Autoriser la batterie sans restriction aide à maintenir la surveillance après avoir retiré l’app des applications récentes ou redémarré le téléphone. Cela peut consommer un peu plus de batterie car Android appliquera moins de limites en arrière-plan.</string>
+    <string name="battery_dialog_continue">CONTINUER</string>
+    <string name="battery_dialog_cancel">ANNULER</string>
+    <string name="open_battery_settings">OUVRIR LES RÉGLAGES BATTERIE</string>
 </resources>
