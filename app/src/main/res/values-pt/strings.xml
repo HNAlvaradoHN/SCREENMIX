@@ -50,7 +50,7 @@
     <string name="tap_outside_title">TOCAR FORA PARA FECHAR</string>
     <string name="tap_outside_subtitle">Feche o menu tocando na área ao redor</string>
     <string name="detection_delay_title">ATRASO DE DETECÇÃO</string>
-    <string name="detection_delay_subtitle">Aumente se o ScreenMix aparecer antes de a captura terminar de ser salva</string>
+    <string name="detection_delay_subtitle">Atraso adicional depois que o ScreenMix confirma que a captura está estável</string>
     <string name="detection_delay_value">%1$d ms</string>
     <string name="test_prompt">TESTAR MENU</string>
     <string name="test_prompt_subtitle">Veja a posição sem tirar uma captura</string>
@@ -67,7 +67,7 @@
     <string name="keep_monitor_status_ready">O monitoramento persistente está pronto. O ScreenMix espera mudanças do sistema e só age quando detecta uma captura.</string>
     <string name="keep_monitor_status_limited">O Android pode interromper o ScreenMix até que o uso de bateria sem restrições seja permitido.</string>
     <string name="battery_dialog_title">Manter o ScreenMix ativo?</string>
-    <string name="battery_dialog_message">O ScreenMix não verifica nem consulta continuamente. Ele espera mudanças de mídia do sistema, trabalha quando detecta uma captura e depois volta a esperar. Permitir bateria sem restrições ajuda a manter o monitoramento depois de remover o app dos Recentes ou reiniciar o telefone. Isso pode usar um pouco mais de bateria porque o Android aplicará menos limites em segundo plano.</string>
+    <string name="battery_dialog_message">Permite que o ScreenMix continue disponível mesmo após fechar o app ou reiniciar o telefone. O ScreenMix fica em repouso e só age quando detecta uma captura de tela. Depois disso, volta a esperar e não fica trabalhando constantemente em segundo plano.</string>
     <string name="battery_dialog_continue">CONTINUAR</string>
     <string name="battery_dialog_cancel">CANCELAR</string>
     <string name="open_battery_settings">ABRIR CONFIGURAÇÕES DE BATERIA</string>
