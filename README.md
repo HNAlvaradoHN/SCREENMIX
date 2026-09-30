@@ -41,6 +41,12 @@ A standard debug build is intended to be produced with:
 
 Build/signing setup will be finalized as part of the ScreenMix migration.
 
+## Automatic restart
+
+If screenshot monitoring was enabled before a reboot, ScreenMix listens for Android's `BOOT_COMPLETED` broadcast and starts the monitor service again automatically. The same recovery path is used after an app update through `MY_PACKAGE_REPLACED`.
+
+A device reboot does not normally require the user to grant ScreenMix's runtime permissions again. Android/OEM battery restrictions or permissions manually revoked by the user can still prevent background operation.
+
 ## Development priorities
 
 1. Complete the independent ScreenMix application identity.
