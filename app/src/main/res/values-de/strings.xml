@@ -7,8 +7,8 @@
     <string name="monitor_needs_access">Fotozugriff erforderlich</string>
     <string name="keep_monitor_title">MONITOR AKTIV HALTEN</string>
     <string name="keep_monitor_subtitle">Weiter überwachen, nachdem ScreenMix aus „Letzte Apps“ entfernt wurde</string>
-    <string name="popup_prompt_title">SCHWEBENDES MENÜ</string>
-    <string name="popup_prompt_subtitle">Aktionen direkt nach jedem Screenshot anzeigen</string>
+    <string name="popup_prompt_title">SCHWEBENDE SCHALTFLÄCHE</string>
+    <string name="popup_prompt_subtitle">Nach jedem Screenshot eine kleine ScreenMix-Schaltfläche anzeigen</string>
     <string name="language_title">SPRACHE</string>
     <string name="language_subtitle">Wähle die Sprache für ScreenMix</string>
     <string name="language_system">System</string>
@@ -50,7 +50,7 @@
     <string name="tap_outside_title">AUSSERHALB TIPPEN ZUM SCHLIESSEN</string>
     <string name="tap_outside_subtitle">Schließe das Menü durch Tippen auf den Bereich außerhalb</string>
     <string name="detection_delay_title">ERKENNUNGSVERZÖGERUNG</string>
-    <string name="detection_delay_subtitle">Zusätzliche Verzögerung, nachdem ScreenMix bestätigt hat, dass der Screenshot stabil ist</string>
+    <string name="detection_delay_subtitle">Verzögerung vor dem Anzeigen der schwebenden Schaltfläche</string>
     <string name="detection_delay_value">%1$d ms</string>
     <string name="test_prompt">MENÜ TESTEN</string>
     <string name="test_prompt_subtitle">Position ohne Screenshot testen</string>
@@ -71,4 +71,6 @@
     <string name="battery_dialog_continue">WEITER</string>
     <string name="battery_dialog_cancel">ABBRECHEN</string>
     <string name="open_battery_settings">AKKUEINSTELLUNGEN ÖFFNEN</string>
+    <string name="open_capture_actions">Screenshot-Aktionen öffnen</string>
+    <string name="close_capture_button">Screenshot-Schaltfläche schließen</string>
 </resources>
