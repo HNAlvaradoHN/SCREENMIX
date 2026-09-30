@@ -12,6 +12,7 @@
 
     <string name="language_title">LANGUAGE</string>
     <string name="language_subtitle">Choose the language used by ScreenMix</string>
+    <string name="language_system">System</string>
     <string name="accent_title">ACCENT COLOR</string>
     <string name="accent_subtitle">Choose a color for ScreenMix, the prompt and notifications</string>
 
