@@ -23,6 +23,11 @@ class ScreenshotActionReceiver : BroadcastReceiver() {
                 ScreenshotActions.launchShareAndSave(context, uri)
                 return
             }
+            ACTION_SHARE_TARGET_CHOSEN -> {
+                val deleteAfterShare = intent.getBooleanExtra(EXTRA_DELETE_AFTER_SHARE, false)
+                ScreenshotActions.onShareTargetChosen(context, uri, deleteAfterShare)
+                return
+            }
         }
         ScreenshotNotifier.cancelPrompt(context, uri)
     }
@@ -33,7 +38,9 @@ class ScreenshotActionReceiver : BroadcastReceiver() {
         const val ACTION_DISMISS = "com.screenmix.app.DISMISS"
         const val ACTION_SHARE_DELETE = "com.screenmix.app.SHARE_DELETE"
         const val ACTION_SHARE_SAVE = "com.screenmix.app.SHARE_SAVE"
+        const val ACTION_SHARE_TARGET_CHOSEN = "com.screenmix.app.SHARE_TARGET_CHOSEN"
         const val EXTRA_URI = "extra_uri"
+        const val EXTRA_DELETE_AFTER_SHARE = "extra_delete_after_share"
     }
 }
 
