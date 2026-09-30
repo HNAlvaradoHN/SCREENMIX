@@ -57,7 +57,7 @@ import com.screenmix.app.handler.ScreenshotPreferences
 import com.screenmix.app.handler.ScreenshotPromptLauncher
 import com.screenmix.app.service.ScreenshotMonitorService
 import com.screenmix.app.ui.theme.ScreenMixAccent
-import com.screenmix.app.ui.theme.ScreenMixScreenMixBodyFont
+import com.screenmix.app.ui.theme.ScreenMixBodyFont
 import com.screenmix.app.ui.theme.ScreenMixDisplayFont
 import com.screenmix.app.ui.theme.ScreenMixTheme
 import com.screenmix.app.ui.theme.ScreenMixThemeColors
