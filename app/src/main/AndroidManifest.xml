@@ -20,13 +20,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BoltScreenshot">
+        android:theme="@style/Theme.ScreenMix">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.BoltScreenshot">
+            android:theme="@style/Theme.ScreenMix">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -41,7 +41,7 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:taskAffinity=""
-            android:theme="@style/Theme.BoltScreenshot.Prompt" />
+            android:theme="@style/Theme.ScreenMix.Prompt" />
 
         <service
             android:name=".service.ScreenshotMonitorService"
