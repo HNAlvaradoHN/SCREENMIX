@@ -45,8 +45,6 @@ object ScreenshotOverlay {
                     val prefs = ScreenshotPreferences(context)
                     BoltScreenshotTheme(themeId = prefs.themeId) {
                         ScreenshotPromptContent(
-                            uri = uri,
-                            copyRowOnTop = prefs.copyRowOnTop,
                             overlayMode = true,
                             position = prefs.promptPosition,
                             tapOutsideToDismiss = prefs.tapOutsideToDismiss,
@@ -59,18 +57,6 @@ object ScreenshotOverlay {
                             onCopySave = {
                                 if (uri != ScreenshotPromptLauncher.testUri) {
                                     ScreenshotActions.copyAndSave(context, uri)
-                                }
-                                hide(context)
-                            },
-                            onShareAndDelete = {
-                                if (uri != ScreenshotPromptLauncher.testUri) {
-                                    ScreenshotActions.launchShareAndDelete(context, uri)
-                                }
-                                hide(context)
-                            },
-                            onShareAndSave = {
-                                if (uri != ScreenshotPromptLauncher.testUri) {
-                                    ScreenshotActions.launchShareAndSave(context, uri)
                                 }
                                 hide(context)
                             },
