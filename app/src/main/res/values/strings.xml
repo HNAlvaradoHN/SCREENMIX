@@ -72,7 +72,7 @@
 
     <string name="keep_monitor_status_ready">Persistent monitoring is ready. ScreenMix waits for media changes and only acts when a screenshot is detected.</string>
     <string name="keep_monitor_status_limited">Android may stop ScreenMix until unrestricted battery access is allowed.</string>
-    <string name="battery_dialog_title">Keep ScreenMix active?</string>
+    <string name="battery_dialog_title">Keep ScreenMix active</string>
     <string name="battery_dialog_message">Keep ScreenMix available even after you close the app or restart your phone. ScreenMix stays idle and only acts when it detects a screenshot. After that, it returns to waiting, so it is not constantly working in the background.</string>
     <string name="battery_dialog_continue">CONTINUE</string>
     <string name="battery_dialog_cancel">CANCEL</string>
