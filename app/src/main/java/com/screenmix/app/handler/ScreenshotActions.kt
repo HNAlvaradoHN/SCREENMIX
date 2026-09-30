@@ -63,7 +63,7 @@ object ScreenshotActions {
     fun onShareCompleted(context: Context, uri: Uri, deleteAfterShare: Boolean) {
         acknowledgeScreenshot(context, uri)
         if (deleteAfterShare) {
-            scheduleShareDelete(context, uri)
+            executeShareDelete(context, uri)
             return
         }
         Toast.makeText(context, "Shared and saved", Toast.LENGTH_SHORT).show()
@@ -133,30 +133,19 @@ object ScreenshotActions {
         ).show()
     }
 
-    fun scheduleShareDelete(context: Context, uri: Uri) {
-        val appContext = context.applicationContext
-        acknowledgeScreenshot(appContext, uri)
-        ScreenshotPreferences(appContext).pendingShareDeleteUri = uri.toString()
-        cancelScheduledShareDelete()
-        val runnable = Runnable {
-            pendingShareDeleteRunnable = null
-            executeShareDelete(appContext, uri)
-        }
-        pendingShareDeleteRunnable = runnable
-        shareDeleteHandler.postDelayed(runnable, SHARE_DELETE_DELAY_MS)
-    }
-
     fun cancelScheduledShareDelete() {
-        pendingShareDeleteRunnable?.let(shareDeleteHandler::removeCallbacks)
-        pendingShareDeleteRunnable = null
+        // Kept for compatibility with the share chooser cancellation path.
     }
 
     fun executeShareDelete(context: Context, uri: Uri) {
-        ScreenshotPreferences(context).pendingShareDeleteUri = null
+        val prefs = ScreenshotPreferences(context)
         if (deleteScreenshotSilently(context, uri)) {
+            prefs.pendingShareDeleteUri = null
             Toast.makeText(context, "Shared and deleted", Toast.LENGTH_SHORT).show()
             return
         }
+
+        prefs.pendingShareDeleteUri = uri.toString()
         launchDeleteConfirmation(
             context,
             uri,
@@ -168,7 +157,6 @@ object ScreenshotActions {
     fun completePendingShareDelete(context: Context): Boolean {
         val prefs = ScreenshotPreferences(context)
         val uriString = prefs.pendingShareDeleteUri ?: return false
-        cancelScheduledShareDelete()
         executeShareDelete(context, Uri.parse(uriString))
         return true
     }
@@ -332,9 +320,6 @@ object ScreenshotActions {
         return null to null
     }
 
-    private val shareDeleteHandler = Handler(Looper.getMainLooper())
-    private var pendingShareDeleteRunnable: Runnable? = null
-    private const val SHARE_DELETE_DELAY_MS = 1_500L
     private const val CLIPBOARD_CACHE_DIR = "clipboard"
     private const val CLIPBOARD_CACHE_MAX_AGE_MS = 24L * 60L * 60L * 1_000L
 }
