@@ -142,7 +142,12 @@ class ScreenshotDetector(
         )?.use { cursor ->
             val idIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
             val nameIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
-            val pathIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.RELATIVE_PATH)
+            val pathColumn = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                MediaStore.Images.Media.RELATIVE_PATH
+            } else {
+                MediaStore.Images.Media.DATA
+            }
+            val pathIndex = cursor.getColumnIndexOrThrow(pathColumn)
             val dateAddedIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED)
             val modifiedIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_MODIFIED)
             val sizeIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
@@ -213,7 +218,12 @@ class ScreenshotDetector(
     private fun buildProjection(): Array<String> = buildList {
         add(MediaStore.Images.Media._ID)
         add(MediaStore.Images.Media.DISPLAY_NAME)
-        add(MediaStore.Images.Media.RELATIVE_PATH)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            add(MediaStore.Images.Media.RELATIVE_PATH)
+        } else {
+            @Suppress("DEPRECATION")
+            add(MediaStore.Images.Media.DATA)
+        }
         add(MediaStore.Images.Media.DATE_ADDED)
         add(MediaStore.Images.Media.DATE_MODIFIED)
         add(MediaStore.Images.Media.SIZE)
