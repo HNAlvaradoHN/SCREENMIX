@@ -85,7 +85,7 @@ object ScreenshotOverlay {
         }
 
         sessionStartedAtSeconds = System.currentTimeMillis() / 1000L
-        originalPath = readImagePath(applicationContext, uri)
+        originalPath = normalizePath(readImagePath(applicationContext, uri))
         currentUri.value = uri
         expanded.value = false
 
@@ -112,7 +112,7 @@ object ScreenshotOverlay {
 
         close(applicationContext, markHandled = false)
         sessionStartedAtSeconds = System.currentTimeMillis() / 1000L
-        originalPath = readImagePath(applicationContext, uri)
+        originalPath = normalizePath(readImagePath(applicationContext, uri))
         currentUri.value = uri
         expanded.value = true
 
@@ -155,11 +155,12 @@ object ScreenshotOverlay {
                 }
             }
 
+            val params = compactLayoutParams(context)
             appContext = context
             windowManager = manager
             composeView = view
-            layoutParams = compactLayoutParams(context)
-            manager.addView(view, layoutParams)
+            layoutParams = params
+            manager.addView(view, params)
             true
         }.getOrElse {
             close(context, markHandled = false)
@@ -359,9 +360,10 @@ object ScreenshotOverlay {
                 inspected += 1
                 val name = cursor.getString(nameIndex)
                 val path = cursor.getString(pathIndex)
+                val normalizedPath = normalizePath(path)
                 val related =
                     ScreenshotActions.isScreenshot(name, path) ||
-                        (originalPath != null && originalPath == path)
+                        (originalPath != null && originalPath == normalizedPath)
 
                 if (!related) continue
 
@@ -374,6 +376,15 @@ object ScreenshotOverlay {
         }
 
         return fallback
+    }
+
+    private fun normalizePath(path: String?): String? {
+        if (path == null) return null
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            path
+        } else {
+            path.substringBeforeLast('/', missingDelimiterValue = path)
+        }
     }
 
     private fun readImagePath(context: Context, uri: Uri): String? {
