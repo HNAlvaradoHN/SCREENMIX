@@ -19,11 +19,23 @@ captures/
 .DS_Store
 Thumbs.db
 
-# Signing — never commit release keys (debug keys and release keys stay local)
+# Signing / secrets — never commit
 release.keystore
+debug.keystore
+*.keystore
 *.jks
+*.p12
+*.pfx
+*.pem
+*.key
 keystore.properties
-release/
+signing.properties
+*.keystore.b64
+*.jks.b64
+screenmix-release.b64
+.env
+.env.*
+!.env.example
 
 # Fonts fetched at build time (both SIL Open Font License)
 app/src/main/res/font/doto_rounded_semibold.ttf
