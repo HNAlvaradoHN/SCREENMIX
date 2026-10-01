@@ -23,38 +23,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          tracked="$(
-            git ls-files | grep -Ei '(^|/)(local\.properties|keystore\.properties|signing\.properties|\.env|debug\.keystore|release\.keystore|[^/]+\.(jks|keystore|p12|pfx|pem|key))
-      - name: Set up Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: "21"
-
-      - name: Install Android SDK packages
-        run: |
-          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
-
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: "9.4.1"
-
-      - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
-
-      - name: Upload debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: ScreenMix-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
- || true
-          )"
-          if [ -n "$tracked" ]; then
+          pattern='(^|/)(local\.properties|keystore\.properties|signing\.properties|\.env|debug\.keystore|release\.keystore|[^/]+\.(jks|keystore|p12|pfx|pem|key))$'
+          if git ls-files | grep -Eiq "$pattern"; then
             echo "Private signing/configuration files must not be tracked:"
-            echo "$tracked"
+            git ls-files | grep -Ei "$pattern"
             exit 1
           fi
 
@@ -65,7 +37,9 @@ jobs:
           java-version: "21"
 
       - name: Install Android SDK packages
+        shell: bash
         run: |
+          set -euo pipefail
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platform-tools" "platforms;android-36" "build-tools;36.0.0"
 
