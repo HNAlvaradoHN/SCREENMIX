@@ -12,6 +12,7 @@ import com.screenmix.app.detector.ScreenshotDetector
 import com.screenmix.app.handler.ScreenshotNotifier
 import com.screenmix.app.handler.ScreenshotPreferences
 import com.screenmix.app.handler.ScreenshotPromptLauncher
+import com.screenmix.app.overlay.ScreenshotOverlay
 
 class ScreenshotMonitorService : LifecycleService() {
     private var detector: ScreenshotDetector? = null
@@ -47,6 +48,7 @@ class ScreenshotMonitorService : LifecycleService() {
     }
 
     override fun onDestroy() {
+        ScreenshotOverlay.hide(this)
         detector?.stop()
         detector = null
         super.onDestroy()
@@ -55,13 +57,18 @@ class ScreenshotMonitorService : LifecycleService() {
     override fun onBind(intent: Intent): IBinder? = super.onBind(intent)
 
     private fun onScreenshotDetected(uri: Uri) {
-        SystemPreviewDismissAccessibilityService.scheduleIfEnabled(this)
         val prefs = ScreenshotPreferences(this)
-        if (!prefs.showInstantPrompt) {
+
+        if (prefs.showInstantPrompt) {
+            if (ScreenshotOverlay.showFloatingSession(this, uri)) {
+                return
+            }
             ScreenshotNotifier.showPrompt(this, uri)
             return
         }
-        ScreenshotPromptLauncher.show(this, uri)
+
+        SystemPreviewDismissAccessibilityService.scheduleIfEnabled(this)
+        ScreenshotNotifier.showPrompt(this, uri)
     }
 
     companion object {
