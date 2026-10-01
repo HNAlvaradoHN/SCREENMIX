@@ -33,6 +33,12 @@ class ScreenshotPreferences(context: Context) {
         get() = prefs.getLong(KEY_DETECTION_DELAY_MS, DEFAULT_DETECTION_DELAY_MS)
         set(value) = prefs.edit().putLong(KEY_DETECTION_DELAY_MS, value.coerceIn(0L, 1000L)).apply()
 
+    var floatingButtonTimeoutMs: Long
+        get() = prefs.getLong(KEY_FLOATING_BUTTON_TIMEOUT_MS, DEFAULT_FLOATING_BUTTON_TIMEOUT_MS)
+        set(value) = prefs.edit()
+            .putLong(KEY_FLOATING_BUTTON_TIMEOUT_MS, value.coerceIn(30_000L, 300_000L))
+            .apply()
+
     var languageTag: String
         get() = prefs.getString(KEY_LANGUAGE_TAG, "") ?: ""
         set(value) = prefs.edit().putString(KEY_LANGUAGE_TAG, value).apply()
@@ -75,12 +81,14 @@ class ScreenshotPreferences(context: Context) {
         private const val KEY_VIBRATE_ON_PROMPT = "vibrate_on_prompt"
         private const val KEY_TAP_OUTSIDE_DISMISS = "tap_outside_dismiss"
         private const val KEY_DETECTION_DELAY_MS = "detection_delay_ms"
+        private const val KEY_FLOATING_BUTTON_TIMEOUT_MS = "floating_button_timeout_ms"
         private const val KEY_LANGUAGE_TAG = "language_tag"
         private const val KEY_ACCENT_ID = "accent_id"
         private const val KEY_DISMISS_SYSTEM_PREVIEW = "dismiss_system_preview"
         private const val KEY_SYSTEM_PREVIEW_DISMISS_DELAY_MS = "system_preview_dismiss_delay_ms"
         private const val KEY_SAVED_URIS = "saved_uris"
         const val DEFAULT_DETECTION_DELAY_MS = 300L
+        const val DEFAULT_FLOATING_BUTTON_TIMEOUT_MS = 90_000L
         const val DEFAULT_SYSTEM_PREVIEW_DISMISS_DELAY_MS = 2_000L
     }
 }
