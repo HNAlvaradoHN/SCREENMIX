@@ -74,4 +74,12 @@
     <string name="open_battery_settings">ABRIR CONFIGURAÇÕES DE BATERIA</string>
     <string name="open_capture_actions">Abrir ações da captura</string>
     <string name="floating_preserves_editor_note">Enquanto o Botão flutuante estiver ativo, o ScreenMix não interfere no editor de capturas do sistema.</string>
+    <string name="floating_duration_title">DURAÇÃO DO BOTÃO FLUTUANTE</string>
+    <string name="floating_duration_subtitle">Escolha por quanto tempo o botão fica visível após uma captura</string>
+    <string name="floating_duration_30s">30 s</string>
+    <string name="floating_duration_1m">1 min</string>
+    <string name="floating_duration_90s">1:30</string>
+    <string name="floating_duration_2m">2 min</string>
+    <string name="floating_duration_3m">3 min</string>
+    <string name="floating_duration_5m">5 min</string>
 </resources>
