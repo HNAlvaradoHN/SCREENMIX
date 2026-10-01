@@ -12,7 +12,7 @@ Current application identity:
 
 - App name: **ScreenMix**
 - Android application ID: `com.screenmix.app`
-- Current development version: `0.2.0`
+- Current development version: `0.3.2`
 - Minimum Android version: Android 8.0 / API 26
 
 ## Privacy
@@ -20,6 +20,8 @@ Current application identity:
 ScreenMix is intended to operate locally on the Android device.
 
 This public repository must not contain private user data, screenshots, credentials, signing keys, local configuration, or other personal files. Development artifacts and signing material should remain outside version control.
+
+Release credentials are supplied only through GitHub Actions Secrets. The release workflow reconstructs the signing keystore temporarily inside the runner and removes it after the job.
 
 ## Upstream attribution
 
@@ -39,9 +41,11 @@ A standard debug build is intended to be produced with:
 ./gradlew assembleDebug
 ```
 
-Build/signing setup will be finalized as part of the ScreenMix migration.
+GitHub Actions builds a debug APK automatically from `main` so compile errors can be caught without publishing a release.
 
-GitHub Actions builds the debug APK automatically from `main` so compile errors can be caught without publishing a release.
+Public downloads should come from **GitHub Releases**, not from debug workflow artifacts. Official release APKs are built by a separate tag-based workflow and must be signed with the project's private release key.
+
+The signing key and passwords are never stored in this public repository. See [RELEASE.md](RELEASE.md) for the secure one-time setup and publishing process.
 
 ## Languages
 
