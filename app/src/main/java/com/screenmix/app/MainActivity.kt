@@ -78,6 +78,9 @@ class MainActivity : ComponentActivity() {
     private var batteryUnrestricted by mutableStateOf(false)
     private var showBatteryInfoDialog by mutableStateOf(false)
     private var instantPrompt by mutableStateOf(true)
+    private var floatingButtonTimeoutMs by mutableStateOf(
+        ScreenshotPreferences.DEFAULT_FLOATING_BUTTON_TIMEOUT_MS,
+    )
     private var promptPosition by mutableStateOf(PromptPosition.CENTER)
     private var vibrateOnPrompt by mutableStateOf(true)
     private var tapOutsideToDismiss by mutableStateOf(true)
@@ -210,6 +213,49 @@ class MainActivity : ComponentActivity() {
                             app.preferences.showInstantPrompt = it
                         },
                     )
+                    if (instantPrompt) {
+                        Spacer(modifier = Modifier.height(14.dp))
+                        Text(
+                            text = getString(R.string.floating_duration_title),
+                            fontFamily = ScreenMixBodyFont,
+                            color = colors.textPrimary,
+                            fontSize = 11.sp,
+                        )
+                        Text(
+                            text = getString(R.string.floating_duration_subtitle),
+                            fontFamily = ScreenMixBodyFont,
+                            color = colors.textMuted,
+                            fontSize = 9.sp,
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        val timeoutOptions = listOf(
+                            30_000L to getString(R.string.floating_duration_30s),
+                            60_000L to getString(R.string.floating_duration_1m),
+                            90_000L to getString(R.string.floating_duration_90s),
+                            120_000L to getString(R.string.floating_duration_2m),
+                            180_000L to getString(R.string.floating_duration_3m),
+                            300_000L to getString(R.string.floating_duration_5m),
+                        )
+                        timeoutOptions.chunked(3).forEach { rowOptions ->
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            ) {
+                                rowOptions.forEach { (timeoutMs, label) ->
+                                    PositionChip(
+                                        label = label,
+                                        selected = floatingButtonTimeoutMs == timeoutMs,
+                                        onClick = {
+                                            floatingButtonTimeoutMs = timeoutMs
+                                            app.preferences.floatingButtonTimeoutMs = timeoutMs
+                                        },
+                                        modifier = Modifier.weight(1f),
+                                    )
+                                }
+                            }
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     SettingRow(
                         title = getString(R.string.overlay_permission_title),
@@ -625,6 +671,7 @@ class MainActivity : ComponentActivity() {
         monitorEnabled = app.preferences.isMonitorEnabled
         keepMonitorActive = app.preferences.keepMonitorActive
         instantPrompt = app.preferences.showInstantPrompt
+        floatingButtonTimeoutMs = app.preferences.floatingButtonTimeoutMs
         promptPosition = app.preferences.promptPosition
         vibrateOnPrompt = app.preferences.vibrateOnPrompt
         tapOutsideToDismiss = app.preferences.tapOutsideToDismiss
