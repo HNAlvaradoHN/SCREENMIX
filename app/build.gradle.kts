@@ -1,3 +1,15 @@
+val releaseKeystorePath = System.getenv("SCREENMIX_KEYSTORE_PATH")
+val releaseKeystorePassword = System.getenv("SCREENMIX_KEYSTORE_PASSWORD")
+val releaseKeyAlias = System.getenv("SCREENMIX_KEY_ALIAS")
+val releaseKeyPassword = System.getenv("SCREENMIX_KEY_PASSWORD")
+
+val hasReleaseSigning = listOf(
+  releaseKeystorePath,
+  releaseKeystorePassword,
+  releaseKeyAlias,
+  releaseKeyPassword,
+).all { !it.isNullOrBlank() }
+
 plugins {
   alias(libs.plugins.android.application)
   alias(libs.plugins.kotlin.compose)
@@ -16,9 +28,23 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  signingConfigs {
+    if (hasReleaseSigning) {
+      create("release") {
+        storeFile = file(releaseKeystorePath!!)
+        storePassword = releaseKeystorePassword
+        keyAlias = releaseKeyAlias
+        keyPassword = releaseKeyPassword
+      }
+    }
+  }
+
   buildTypes {
     release {
       isMinifyEnabled = false
+      if (hasReleaseSigning) {
+        signingConfig = signingConfigs.getByName("release")
+      }
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
@@ -48,3 +74,15 @@ dependencies {
   debugImplementation(libs.androidx.compose.ui.tooling)
 }
 
+
+
+tasks.register("verifyReleaseSigning") {
+  doLast {
+    check(hasReleaseSigning) {
+      "Release signing is not configured. Provide SCREENMIX_KEYSTORE_PATH, SCREENMIX_KEYSTORE_PASSWORD, SCREENMIX_KEY_ALIAS, and SCREENMIX_KEY_PASSWORD."
+    }
+    check(file(releaseKeystorePath!!).isFile) {
+      "Release keystore file was not found."
+    }
+  }
+}
