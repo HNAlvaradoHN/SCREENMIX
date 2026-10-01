@@ -74,4 +74,12 @@
     <string name="open_battery_settings">AKKUEINSTELLUNGEN ÖFFNEN</string>
     <string name="open_capture_actions">Screenshot-Aktionen öffnen</string>
     <string name="floating_preserves_editor_note">Solange die schwebende Schaltfläche aktiv ist, lässt ScreenMix den Screenshot-Editor des Systems unangetastet.</string>
+    <string name="floating_duration_title">DAUER DER SCHWEBENDEN SCHALTFLÄCHE</string>
+    <string name="floating_duration_subtitle">Lege fest, wie lange die Schaltfläche nach einem Screenshot sichtbar bleibt</string>
+    <string name="floating_duration_30s">30 s</string>
+    <string name="floating_duration_1m">1 Min</string>
+    <string name="floating_duration_90s">1:30</string>
+    <string name="floating_duration_2m">2 Min</string>
+    <string name="floating_duration_3m">3 Min</string>
+    <string name="floating_duration_5m">5 Min</string>
 </resources>
