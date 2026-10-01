@@ -12,20 +12,27 @@ import android.view.Gravity
 import android.view.WindowManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.ComposeView
 import androidx.lifecycle.Lifecycle
@@ -98,7 +105,10 @@ object ScreenshotOverlay {
 
         updateWindow(expandedMode = false)
         handler.removeCallbacks(timeoutRunnable)
-        handler.postDelayed(timeoutRunnable, SESSION_TIMEOUT_MS)
+        handler.postDelayed(
+            timeoutRunnable,
+            ScreenshotPreferences(applicationContext).floatingButtonTimeoutMs,
+        )
         return true
     }
 
@@ -175,34 +185,85 @@ object ScreenshotOverlay {
             ScreenshotPreferences(context).accentId,
         )
         val iconTint = if (accent == ScreenMixAccent.ICE) Color.Black else Color.White
+        val bubbleShape = RoundedCornerShape(22.dp)
 
-        Box(modifier = Modifier.size(78.dp)) {
-            Box(
+        Box(
+            modifier = Modifier.size(width = 96.dp, height = 72.dp),
+        ) {
+            Row(
                 modifier = Modifier
-                    .size(58.dp)
                     .align(Alignment.BottomStart)
-                    .clip(CircleShape)
-                    .background(colors.accent)
+                    .size(width = 82.dp, height = 58.dp)
+                    .shadow(12.dp, bubbleShape)
+                    .clip(bubbleShape)
+                    .background(
+                        Brush.linearGradient(
+                            listOf(
+                                colors.surfaceAlt,
+                                colors.surface,
+                            ),
+                        ),
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = colors.accent.copy(alpha = 0.45f),
+                        shape = bubbleShape,
+                    )
                     .clickable {
                         expanded.value = true
                         updateWindow(expandedMode = true)
-                    },
-                contentAlignment = Alignment.Center,
+                    }
+                    .padding(horizontal = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_notification),
-                    contentDescription = context.getString(R.string.open_capture_actions),
-                    colorFilter = ColorFilter.tint(iconTint),
-                    modifier = Modifier.size(28.dp),
+                Box(
+                    modifier = Modifier
+                        .size(38.dp)
+                        .clip(CircleShape)
+                        .background(
+                            Brush.linearGradient(
+                                listOf(
+                                    colors.accent,
+                                    colors.accent.copy(alpha = 0.72f),
+                                ),
+                            ),
+                        )
+                        .border(
+                            width = 1.dp,
+                            color = Color.White.copy(alpha = 0.16f),
+                            shape = CircleShape,
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_notification),
+                        contentDescription = context.getString(R.string.open_capture_actions),
+                        colorFilter = ColorFilter.tint(iconTint),
+                        modifier = Modifier.size(21.dp),
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(width = 16.dp, height = 34.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(colors.accent.copy(alpha = 0.18f)),
                 )
             }
 
             Box(
                 modifier = Modifier
-                    .size(26.dp)
+                    .size(25.dp)
                     .align(Alignment.TopEnd)
+                    .shadow(7.dp, CircleShape)
                     .clip(CircleShape)
                     .background(colors.surfaceAlt)
+                    .border(
+                        width = 1.dp,
+                        color = Color.White.copy(alpha = 0.10f),
+                        shape = CircleShape,
+                    )
                     .clickable {
                         close(context, markHandled = true)
                     },
@@ -210,8 +271,8 @@ object ScreenshotOverlay {
             ) {
                 Text(
                     text = "×",
-                    color = colors.textPrimary,
-                    fontSize = 17.sp,
+                    color = colors.textPrimary.copy(alpha = 0.92f),
+                    fontSize = 15.sp,
                 )
             }
         }
@@ -259,8 +320,8 @@ object ScreenshotOverlay {
             params.x = 0
             params.y = 0
         } else {
-            params.width = (78 * density).toInt()
-            params.height = (78 * density).toInt()
+            params.width = (96 * density).toInt()
+            params.height = (72 * density).toInt()
             params.gravity = Gravity.END or Gravity.CENTER_VERTICAL
             params.x = (12 * density).toInt()
             params.y = 0
@@ -307,8 +368,8 @@ object ScreenshotOverlay {
     private fun compactLayoutParams(context: Context): WindowManager.LayoutParams {
         val density = context.resources.displayMetrics.density
         return WindowManager.LayoutParams(
-            (78 * density).toInt(),
-            (78 * density).toInt(),
+            (96 * density).toInt(),
+            (72 * density).toInt(),
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
@@ -411,7 +472,6 @@ object ScreenshotOverlay {
         return null
     }
 
-    private const val SESSION_TIMEOUT_MS = 90_000L
     private const val MAX_RECENT_ROWS = 16
 }
 
