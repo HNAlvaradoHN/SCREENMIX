@@ -340,69 +340,78 @@ class MainActivity : ComponentActivity() {
                         fontSize = 11.sp,
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    SettingRow(
-                        title = getString(R.string.dismiss_preview_title),
-                        subtitle = if (hasAccessibilityDismiss && dismissSystemPreview) {
-                            getString(R.string.dismiss_preview_subtitle_on)
-                        } else {
-                            getString(R.string.dismiss_preview_subtitle_off)
-                        },
-                        checked = dismissSystemPreview,
-                        onCheckedChange = { enabled ->
-                            dismissSystemPreview = enabled
-                            app.preferences.dismissSystemPreview = enabled
-                            if (enabled && !hasAccessibilityDismiss) {
-                                SystemPreviewDismissAccessibilityService.openSettings(this@MainActivity)
-                            }
-                        },
-                    )
-                    if (dismissSystemPreview && !hasAccessibilityDismiss) {
-                        Spacer(modifier = Modifier.height(12.dp))
-                        SettingsButton(
-                            label = getString(R.string.enable_dismiss_preview),
-                            primary = false,
-                            onClick = { SystemPreviewDismissAccessibilityService.openSettings(this@MainActivity) },
-                        )
-                    }
-                    if (dismissSystemPreview && hasAccessibilityDismiss) {
-                        Spacer(modifier = Modifier.height(16.dp))
+                    if (instantPrompt) {
                         Text(
-                            text = getString(R.string.dismiss_preview_delay_title),
-                            fontFamily = ScreenMixBodyFont,
-                            color = colors.textPrimary,
-                            fontSize = 11.sp,
-                        )
-                        Text(
-                            text = getString(R.string.dismiss_preview_delay_subtitle),
+                            text = getString(R.string.floating_preserves_editor_note),
                             fontFamily = ScreenMixBodyFont,
                             color = colors.textMuted,
                             fontSize = 9.sp,
                         )
-                        Text(
-                            text = getString(
-                                R.string.detection_delay_value,
-                                systemPreviewDismissDelayMs.roundToInt(),
-                            ),
-                            fontFamily = ScreenMixBodyFont,
-                            color = colors.accent,
-                            fontSize = 10.sp,
-                            modifier = Modifier.padding(top = 6.dp),
-                        )
-                        Slider(
-                            value = systemPreviewDismissDelayMs,
-                            onValueChange = { systemPreviewDismissDelayMs = it },
-                            onValueChangeFinished = {
-                                app.preferences.systemPreviewDismissDelayMs =
-                                    systemPreviewDismissDelayMs.roundToInt().toLong()
+                    } else {
+                        SettingRow(
+                            title = getString(R.string.dismiss_preview_title),
+                            subtitle = if (hasAccessibilityDismiss && dismissSystemPreview) {
+                                getString(R.string.dismiss_preview_subtitle_on)
+                            } else {
+                                getString(R.string.dismiss_preview_subtitle_off)
                             },
-                            valueRange = 500f..3_000f,
-                            steps = 4,
-                            colors = SliderDefaults.colors(
-                                thumbColor = colors.textPrimary,
-                                activeTrackColor = colors.accent,
-                                inactiveTrackColor = colors.surface,
-                            ),
+                            checked = dismissSystemPreview,
+                            onCheckedChange = { enabled ->
+                                dismissSystemPreview = enabled
+                                app.preferences.dismissSystemPreview = enabled
+                                if (enabled && !hasAccessibilityDismiss) {
+                                    SystemPreviewDismissAccessibilityService.openSettings(this@MainActivity)
+                                }
+                            },
                         )
+                        if (dismissSystemPreview && !hasAccessibilityDismiss) {
+                            Spacer(modifier = Modifier.height(12.dp))
+                            SettingsButton(
+                                label = getString(R.string.enable_dismiss_preview),
+                                primary = false,
+                                onClick = { SystemPreviewDismissAccessibilityService.openSettings(this@MainActivity) },
+                            )
+                        }
+                        if (dismissSystemPreview && hasAccessibilityDismiss) {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                text = getString(R.string.dismiss_preview_delay_title),
+                                fontFamily = ScreenMixBodyFont,
+                                color = colors.textPrimary,
+                                fontSize = 11.sp,
+                            )
+                            Text(
+                                text = getString(R.string.dismiss_preview_delay_subtitle),
+                                fontFamily = ScreenMixBodyFont,
+                                color = colors.textMuted,
+                                fontSize = 9.sp,
+                            )
+                            Text(
+                                text = getString(
+                                    R.string.detection_delay_value,
+                                    systemPreviewDismissDelayMs.roundToInt(),
+                                ),
+                                fontFamily = ScreenMixBodyFont,
+                                color = colors.accent,
+                                fontSize = 10.sp,
+                                modifier = Modifier.padding(top = 6.dp),
+                            )
+                            Slider(
+                                value = systemPreviewDismissDelayMs,
+                                onValueChange = { systemPreviewDismissDelayMs = it },
+                                onValueChangeFinished = {
+                                    app.preferences.systemPreviewDismissDelayMs =
+                                        systemPreviewDismissDelayMs.roundToInt().toLong()
+                                },
+                                valueRange = 500f..3_000f,
+                                steps = 4,
+                                colors = SliderDefaults.colors(
+                                    thumbColor = colors.textPrimary,
+                                    activeTrackColor = colors.accent,
+                                    inactiveTrackColor = colors.surface,
+                                ),
+                            )
+                        }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
